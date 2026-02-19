@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Mock Group Discussion{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <h3 class="fw-bold mb-4"><i class="bi bi-people-fill me-2 text-info"></i>Mock Group Discussion</h3>
+        <p class="text-muted">Practice GD skills with AI panelists. Select a topic and participate in a realistic group discussion.</p>
+
+        <form method="POST">
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Select a Topic</label>
+                    <select name="topic" class="form-select">
+                        <option value="">-- Choose a topic --</option>
+                        <option value="AI will replace most jobs in the next decade">AI will replace most jobs in the next decade</option>
+                        <option value="Remote work is better than office work">Remote work is better than office work</option>
+                        <option value="Should coding be mandatory in school?">Should coding be mandatory in school?</option>
+                        <option value="Startups vs Corporate jobs for fresh graduates">Startups vs Corporate jobs for fresh graduates</option>
+                        <option value="Is higher education still necessary for success?">Is higher education still necessary for success?</option>
+                        <option value="Social media: boon or bane for careers?">Social media: boon or bane for careers?</option>
+                        <option value="Should companies hire based on skills or degrees?">Should companies hire based on skills or degrees?</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Or Enter Custom Topic</label>
+                    <input type="text" name="custom_topic" class="form-control" placeholder="Type your own GD topic...">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-info btn-lg text-white" id="searchBtn">
+                        <i class="bi bi-play-fill me-1"></i>Start Group Discussion
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Group Discussion — Round {{ round_num }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="fw-bold mb-0"><i class="bi bi-people-fill me-2 text-info"></i>{{ topic }}</h5>
+                <span class="badge bg-info">Round {{ round_num }}</span>
+            </div>
+            <form method="POST" action="{{ url_for('group_discussion.reset') }}">
+                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle me-1"></i>End GD</button>
+            </form>
+        </div>
+
+        <!-- Discussion Window -->
+        <div class="card shadow border-0">
+            <div class="card-body p-0">
+                <div id="chatWindow" style="height: 450px; overflow-y: auto; padding: 1.5rem; background: #f0f4f8;">
+                    {% set messages = session.get('gd_messages', []) %}
+                    {% for msg in messages %}
+                        {% if msg.role == 'assistant' %}
+                        <div class="d-flex mb-3">
+                            <div class="me-2"><span class="badge bg-info rounded-circle p-2"><i class="bi bi-people"></i></span></div>
+                            <div class="bg-white rounded-3 p-3 shadow-sm" style="max-width: 85%;">
+                                <div class="ai-response">{{ msg.content }}</div>
+                            </div>
+                        </div>
+                        {% elif msg.role == 'user' %}
+                        <div class="d-flex mb-3 justify-content-end">
+                            <div class="bg-primary text-white rounded-3 p-3 shadow-sm" style="max-width: 80%;">
+                                <strong>You:</strong> {{ msg.content }}
+                            </div>
+                            <div class="ms-2"><span class="badge bg-primary rounded-circle p-2"><i class="bi bi-person"></i></span></div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="p-3 border-top bg-white">
+                    <form method="POST" action="{{ url_for('group_discussion.discuss') }}">
+                        <div class="input-group">
+                            <input type="text" name="message" class="form-control form-control-lg" placeholder="Share your thoughts..." autofocus required id="voiceInput">
+                            <button type="button" class="btn btn-outline-secondary" onclick="startVoiceInput('voiceInput')" title="Voice input">
+                                <i class="bi bi-mic"></i>
+                            </button>
+                            <button type="submit" class="btn btn-info text-white" id="searchBtn"><i class="bi bi-send me-1"></i>Speak</button>
+                        </div>
+                        {% if round_num >= 5 %}
+                        <small class="text-warning mt-1 d-block"><i class="bi bi-exclamation-triangle me-1"></i>Round 5+: The moderator will provide your evaluation after this response.</small>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const chatWindow = document.getElementById('chatWindow');
+    if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
+</script>
+{% endblock %}

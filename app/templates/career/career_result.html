@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Career Path Explorer — Virtual Career Counselor{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h3 class="mb-4"><i class="bi bi-compass me-2 text-primary"></i>Career Path Explorer</h3>
+
+        <!-- Search Form -->
+        <form method="POST" action="{{ url_for('career.explore') }}" class="card shadow-sm mb-4">
+            <div class="card-body">
+                <label for="career_name" class="form-label fw-semibold">Enter a career or job title</label>
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" id="career_name" name="career_name"
+                           placeholder="e.g. Data Scientist, Cloud Engineer, UX Designer"
+                           value="{{ career_name }}" required maxlength="300">
+                    <button type="submit" class="btn btn-primary btn-lg" id="searchBtn">
+                        <i class="bi bi-search me-1"></i>Explore
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- AI Result -->
+        {% if result %}
+        <div class="card shadow-sm border-start border-primary border-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-stars me-1"></i>AI Career Overview: <strong>{{ career_name }}</strong></span>
+            </div>
+            <div class="card-body ai-response">
+                {{ result | safe }}
+            </div>
+            <div class="card-footer text-end">
+                <form method="POST" action="{{ url_for('career.email_report') }}" class="d-inline">
+                    <input type="hidden" name="report_body" value="{{ result }}">
+                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-envelope me-1"></i>Email This Report
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

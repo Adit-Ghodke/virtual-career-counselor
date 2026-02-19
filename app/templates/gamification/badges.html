@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Badges & Leaderboard — Virtual Career Counselor{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <h3 class="mb-4"><i class="bi bi-trophy me-2 text-warning"></i>Badges &amp; Leaderboard</h3>
+
+        <div class="row g-4">
+            <!-- Left: Your Badges -->
+            <div class="col-lg-7">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-warning bg-opacity-25 fw-semibold">
+                        <i class="bi bi-award me-1"></i>Your Badges
+                        <span class="badge bg-primary rounded-pill float-end">{{ badges | length }} / {{ total_possible }}</span>
+                    </div>
+                    <div class="card-body">
+                        {% if badges %}
+                        <div class="row g-3">
+                            {% for badge in badges %}
+                            <div class="col-md-4 col-6 text-center">
+                                <div class="card h-100 border-0 bg-light">
+                                    <div class="card-body py-3">
+                                        <i class="bi {{ badge.icon }} fs-1 text-warning"></i>
+                                        <h6 class="mt-2 mb-1 fw-bold">{{ badge.badge_name }}</h6>
+                                        <small class="text-muted">{{ badge.description }}</small>
+                                        <div class="mt-1">
+                                            <small class="text-secondary">{{ badge.awarded_at[:10] }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-emoji-smile fs-1"></i>
+                            <p class="mt-2">No badges yet! Start using features to earn badges.</p>
+                            <a href="{{ url_for('career.explore') }}" class="btn btn-primary btn-sm">Start Exploring</a>
+                        </div>
+                        {% endif %}
+
+                        <!-- Stats -->
+                        <div class="mt-4 p-3 bg-light rounded">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <h4 class="text-primary mb-0">{{ query_count }}</h4>
+                                    <small class="text-muted">Total Queries</small>
+                                </div>
+                                <div class="col-4">
+                                    <h4 class="text-warning mb-0">{{ badges | length }}</h4>
+                                    <small class="text-muted">Badges Earned</small>
+                                </div>
+                                <div class="col-4">
+                                    <h4 class="text-success mb-0">{% if user_rank %}#{{ user_rank }}{% else %}—{% endif %}</h4>
+                                    <small class="text-muted">Your Rank</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Leaderboard -->
+            <div class="col-lg-5">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white fw-semibold">
+                        <i class="bi bi-bar-chart me-1"></i>Leaderboard — Top 20
+                    </div>
+                    <div class="card-body p-0">
+                        {% if leaderboard %}
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="15%">#</th>
+                                    <th>User</th>
+                                    <th width="25%" class="text-center">Badges</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entry in leaderboard %}
+                                <tr {% if entry.user_id == session.get('user_id') %}class="table-warning fw-bold"{% endif %}>
+                                    <td>
+                                        {% if loop.index == 1 %}<i class="bi bi-trophy-fill text-warning"></i>
+                                        {% elif loop.index == 2 %}<i class="bi bi-trophy-fill text-secondary"></i>
+                                        {% elif loop.index == 3 %}<i class="bi bi-trophy-fill text-danger"></i>
+                                        {% else %}{{ loop.index }}{% endif %}
+                                    </td>
+                                    <td>{{ entry.user_id[:12] }}…</td>
+                                    <td class="text-center"><span class="badge bg-primary rounded-pill">{{ entry.badge_count }}</span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <div class="text-center py-4 text-muted">
+                            <p>No entries yet. Be the first!</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

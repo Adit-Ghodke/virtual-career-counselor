@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Market Trends — Virtual Career Counselor{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <h3 class="mb-4"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Real-Time Job Market Trends</h3>
+
+        <!-- Industry Selector -->
+        <form method="POST" action="{{ url_for('trends.dashboard') }}" class="card shadow-sm mb-4">
+            <div class="card-body">
+                <p class="text-muted mb-3">Select an industry to get AI-powered insights on hiring trends, top skills in demand, salary ranges, and growth projections.</p>
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-8">
+                        <label for="industry" class="form-label fw-semibold">Industry / Domain</label>
+                        <div class="input-group">
+                            <select class="form-select" id="industrySelect" onchange="document.getElementById('industry').value=this.value">
+                                <option value="">— Quick Pick —</option>
+                                {% for ind in industries %}
+                                <option value="{{ ind }}" {% if selected == ind %}selected{% endif %}>{{ ind }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="text" class="form-control" id="industry" name="industry"
+                                   placeholder="Or type your own…" value="{{ selected }}" required maxlength="200">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-bar-chart-line me-1"></i>Get Trends
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- AI Trends Report -->
+        {% if result %}
+        <div class="card shadow-sm border-start border-primary border-4 mb-4">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-stars me-1"></i>Market Trends: {{ selected }}
+            </div>
+            <div class="card-body ai-response">
+                {{ result | safe }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

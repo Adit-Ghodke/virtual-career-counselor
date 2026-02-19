@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Skill Gap Heatmap{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <h3 class="fw-bold mb-4"><i class="bi bi-bar-chart-line me-2 text-danger"></i>Skill Gap Heatmap</h3>
+        <p class="text-muted">Visualize the gap between your current skills and what's needed for your target role.</p>
+
+        <form method="POST" class="mb-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Target Role *</label>
+                    <input type="text" name="target_role" class="form-control" placeholder="e.g. Data Scientist, DevOps Engineer" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Experience Level</label>
+                    <select name="experience" class="form-select">
+                        <option value="Fresher">Fresher (0-1 years)</option>
+                        <option value="Junior">Junior (1-3 years)</option>
+                        <option value="Mid-level" selected>Mid-level (3-5 years)</option>
+                        <option value="Senior">Senior (5-10 years)</option>
+                        <option value="Lead">Lead (10+ years)</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Your Current Skills *</label>
+                    <textarea name="current_skills" class="form-control" rows="3" placeholder="e.g. Python, JavaScript, SQL, Machine Learning basics, Git, Docker..." required></textarea>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-danger btn-lg" id="searchBtn">
+                        <i class="bi bi-bar-chart-line me-1"></i>Analyze Skill Gap
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        {% if result %}
+        <!-- Readiness Score -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body text-center py-4">
+                <h4>Overall Readiness</h4>
+                <div class="display-1 fw-bold" id="readinessScore" data-score="{{ result.readiness }}">
+                    {{ result.readiness }}%
+                </div>
+                <p class="text-muted">{{ result.get('timeline', 'N/A') }} estimated to close the gap</p>
+            </div>
+        </div>
+        <script>
+        (function() {
+            var el = document.getElementById('readinessScore');
+            var score = parseInt(el.getAttribute('data-score'), 10);
+            el.style.color = score >= 70 ? '#198754' : score >= 40 ? '#ffc107' : '#dc3545';
+        })();
+        </script>
+
+        <!-- Chart -->
+        {% if chart_data and chart_data != '[]' %}
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-light"><h6 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Skills Comparison Chart</h6></div>
+            <div class="card-body">
+                <canvas id="skillGapChart" height="100"></canvas>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Priority Skills -->
+        {% if result.priority_skills %}
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-warning text-dark"><h6 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Priority Skills to Learn</h6></div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2">
+                    {% for skill in result.priority_skills %}
+                    <span class="badge bg-danger fs-6 p-2">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Summary -->
+        {% if result.summary %}
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-info text-white"><h6 class="mb-0"><i class="bi bi-chat-text me-2"></i>Analysis Summary</h6></div>
+            <div class="card-body">
+                <div class="ai-response">{{ result.summary }}</div>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+{% if chart_data and chart_data != '[]' %}
+<div id="chartDataHolder" data-chart="{{ chart_data|e }}"></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+(function() {
+    var holder = document.getElementById('chartDataHolder');
+    var skillData = JSON.parse(holder.getAttribute('data-chart'));
+    var labels = skillData.map(function(s) { return s.skill; });
+    var current = skillData.map(function(s) { return s.current; });
+    var required = skillData.map(function(s) { return s.required; });
+
+    new Chart(document.getElementById('skillGapChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                { label: 'Your Level', data: current, backgroundColor: 'rgba(25, 135, 84, 0.7)', borderRadius: 4 },
+                { label: 'Required Level', data: required, backgroundColor: 'rgba(220, 53, 69, 0.4)', borderRadius: 4 }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: 'Skill Level (%)' } } },
+            plugins: { legend: { position: 'top' } }
+        }
+    });
+})();
+</script>
+{% endif %}
+{% endblock %}

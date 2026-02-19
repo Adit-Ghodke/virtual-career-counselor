@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Peer Comparison — Virtual Career Counselor{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h3 class="mb-4"><i class="bi bi-people me-2 text-primary"></i>Peer Comparison &amp; Benchmarking</h3>
+
+        <!-- Form -->
+        <form method="POST" action="{{ url_for('peers.compare') }}" class="card shadow-sm mb-4">
+            <div class="card-body">
+                <p class="text-muted mb-3">Compare your profile against industry peers. Get insights on where you stand and what to improve.</p>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="target_role" class="form-label fw-semibold">Target Role</label>
+                        <input type="text" class="form-control" id="target_role" name="target_role"
+                               placeholder="e.g. Full Stack Developer" required maxlength="200"
+                               value="{{ form_data.get('target_role', '') }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="experience" class="form-label fw-semibold">Experience Level</label>
+                        <input type="text" class="form-control" id="experience" name="experience"
+                               placeholder="e.g. 3 years" maxlength="50"
+                               value="{{ form_data.get('experience', '') }}">
+                    </div>
+                    <div class="col-12">
+                        <label for="skills" class="form-label fw-semibold">Your Skills</label>
+                        <textarea class="form-control" id="skills" name="skills" rows="2"
+                                  placeholder="e.g. React, Node.js, PostgreSQL, Docker, AWS" required maxlength="1000">{{ form_data.get('skills', '') }}</textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">
+                    <i class="bi bi-bar-chart-steps me-1"></i>Compare with Peers
+                </button>
+            </div>
+        </form>
+
+        <!-- AI Result -->
+        {% if result %}
+        <div class="card shadow-sm border-start border-info border-4 mb-4">
+            <div class="card-header bg-info text-white">
+                <i class="bi bi-stars me-1"></i>Peer Comparison Report
+            </div>
+            <div class="card-body ai-response">
+                {{ result | safe }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,149 @@
+/* ── Virtual Career Counselor v3.0 — Custom Styles ────────────────── */
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* AI response formatting */
+.ai-response {
+    white-space: pre-wrap;
+    line-height: 1.7;
+    font-size: 0.97rem;
+}
+
+.ai-response h2,
+.ai-response h3 {
+    margin-top: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #0d6efd;
+}
+
+.ai-response ul,
+.ai-response ol {
+    padding-left: 1.5rem;
+}
+
+/* Card hover lift */
+.card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1) !important;
+}
+
+/* Loading spinner on submit */
+.btn[type="submit"].loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* Navbar brand icon */
+.navbar-brand i {
+    font-size: 1.3rem;
+}
+
+/* Footer stays at bottom */
+footer {
+    margin-top: auto;
+}
+
+/* ── Dark Mode ────────────────────────────────────────────────────── */
+
+[data-bs-theme="dark"] {
+    --bs-body-bg: #1a1d23;
+    --bs-body-color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] body {
+    background-color: #1a1d23;
+    color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] .bg-light {
+    background-color: #2d3139 !important;
+}
+
+[data-bs-theme="dark"] .card {
+    background-color: #2d3139;
+    border-color: #3d4149;
+}
+
+[data-bs-theme="dark"] .card:hover {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.3) !important;
+}
+
+[data-bs-theme="dark"] .text-muted {
+    color: #9e9e9e !important;
+}
+
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .form-select {
+    background-color: #2d3139;
+    border-color: #3d4149;
+    color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] .table {
+    color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] .table-light {
+    background-color: #2d3139;
+    color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] .dropdown-menu {
+    background-color: #2d3139;
+    border-color: #3d4149;
+}
+
+[data-bs-theme="dark"] .dropdown-item {
+    color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] .dropdown-item:hover {
+    background-color: #3d4149;
+}
+
+[data-bs-theme="dark"] .dropdown-header {
+    color: #9e9e9e;
+}
+
+[data-bs-theme="dark"] .ai-response h2,
+[data-bs-theme="dark"] .ai-response h3 {
+    color: #6ea8fe;
+}
+
+[data-bs-theme="dark"] .alert-light {
+    background-color: #2d3139;
+    border-color: #3d4149;
+    color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] #chatWindow {
+    background-color: #1a1d23 !important;
+}
+
+[data-bs-theme="dark"] .bg-white {
+    background-color: #2d3139 !important;
+}
+
+/* ── Voice Input Animation ────────────────────────────────────────── */
+
+.voice-recording {
+    animation: pulse-red 1.5s infinite;
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+/* ── Dropdown mega menu width ─────────────────────────────────────── */
+.dropdown-menu-lg {
+    min-width: 280px;
+}

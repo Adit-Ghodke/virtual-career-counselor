@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Salary Negotiation — Virtual Career Counselor{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h3 class="mb-4"><i class="bi bi-cash-stack me-2 text-primary"></i>Salary Negotiation Simulator</h3>
+
+        {% if not conversation %}
+        <!-- Start Form -->
+        <form method="POST" action="{{ url_for('negotiation.begin') }}" class="card shadow-sm mb-4">
+            <div class="card-body">
+                <p class="text-muted mb-3">Practice salary negotiation with an AI-powered HR Manager. Get scored on your technique!</p>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="role" class="form-label fw-semibold">Job Role</label>
+                        <input type="text" class="form-control" id="role" name="role"
+                               placeholder="e.g. Senior Software Engineer" required maxlength="200">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="company_type" class="form-label fw-semibold">Company Type</label>
+                        <select class="form-select" id="company_type" name="company_type">
+                            <option value="Big Tech (FAANG)">Big Tech (FAANG)</option>
+                            <option value="Startup">Startup</option>
+                            <option value="Mid-size Company" selected>Mid-size Company</option>
+                            <option value="MNC / Consulting">MNC / Consulting</option>
+                            <option value="Government">Government</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="experience" class="form-label fw-semibold">Years of Experience</label>
+                        <input type="text" class="form-control" id="experience" name="experience"
+                               placeholder="e.g. 3 years" required maxlength="50">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="expected_salary" class="form-label fw-semibold">Expected Salary (LPA / USD)</label>
+                        <input type="text" class="form-control" id="expected_salary" name="expected_salary"
+                               placeholder="e.g. 25 LPA or $120K" required maxlength="50">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">
+                    <i class="bi bi-play-fill me-1"></i>Start Negotiation
+                </button>
+            </div>
+        </form>
+
+        {% else %}
+        <!-- Conversation -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between">
+                <span><i class="bi bi-chat-dots me-1"></i>Negotiation — Round {{ round }}</span>
+                <span class="badge bg-light text-dark">{{ round }} / 4</span>
+            </div>
+            <div class="card-body" style="max-height: 450px; overflow-y: auto" id="chatBox">
+                {% for msg in conversation %}
+                {% if msg.role == 'user' or msg.role == 'assistant' %}
+                <div class="mb-3 p-3 rounded {% if msg.role == 'user' %}bg-primary bg-opacity-10 text-end{% else %}bg-light{% endif %}">
+                    {% if msg.role == 'user' %}
+                    <small class="text-primary fw-semibold"><i class="bi bi-person-fill me-1"></i>You</small>
+                    {% else %}
+                    <small class="text-dark fw-semibold"><i class="bi bi-robot me-1"></i>HR Manager</small>
+                    {% endif %}
+                    <div class="mt-1 ai-response">{{ msg.content | safe }}</div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if not finished %}
+            <div class="card-footer">
+                <form method="POST" action="{{ url_for('negotiation.reply') }}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="user_reply" required
+                               placeholder="Type your negotiation response..." maxlength="1000" autofocus>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-send me-1"></i>Reply
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {% else %}
+            <div class="card-footer text-center">
+                <a href="{{ url_for('negotiation.start') }}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-repeat me-1"></i>New Negotiation
+                </a>
+                <a href="{{ url_for('gamification.badges') }}" class="btn btn-outline-success ms-2">
+                    <i class="bi bi-trophy me-1"></i>View Badges
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    // Auto-scroll to latest message
+    const cb = document.getElementById('chatBox');
+    if (cb) cb.scrollTop = cb.scrollHeight;
+</script>
+{% endblock %}

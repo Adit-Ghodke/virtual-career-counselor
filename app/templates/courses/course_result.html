@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Course Recommendations — Virtual Career Counselor{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h3 class="mb-4"><i class="bi bi-book me-2 text-success"></i>Personalized Course Recommendations</h3>
+
+        <!-- Preference Form -->
+        <form method="POST" action="{{ url_for('courses.recommend') }}" class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="interests" class="form-label fw-semibold">Your Interests</label>
+                    <input type="text" class="form-control" id="interests" name="interests"
+                           placeholder="e.g. Machine Learning, Web Development, Cloud Computing"
+                           value="{{ form_data.get('interests', '') }}" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="skill_level" class="form-label fw-semibold">Current Skill Level</label>
+                        <select class="form-select" id="skill_level" name="skill_level">
+                            <option value="Beginner" {% if form_data.get('skill_level')=='Beginner' %}selected{% endif %}>Beginner</option>
+                            <option value="Intermediate" {% if form_data.get('skill_level')=='Intermediate' %}selected{% endif %}>Intermediate</option>
+                            <option value="Advanced" {% if form_data.get('skill_level')=='Advanced' %}selected{% endif %}>Advanced</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="time_availability" class="form-label fw-semibold">Hours / Week</label>
+                        <input type="number" class="form-control" id="time_availability" name="time_availability"
+                               min="1" max="40" value="{{ form_data.get('time_availability', '5') }}" placeholder="5">
+                    </div>
+                    <div class="col-md-4 mb-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success w-100" id="searchBtn">
+                            <i class="bi bi-stars me-1"></i>Get Courses
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-0">
+                    <label for="learning_goals" class="form-label fw-semibold">Learning Goals</label>
+                    <textarea class="form-control" id="learning_goals" name="learning_goals" rows="2"
+                              placeholder="e.g. Land a data analyst job, build full-stack apps, get AWS certified"
+                              required>{{ form_data.get('learning_goals', '') }}</textarea>
+                </div>
+            </div>
+        </form>
+
+        <!-- AI Result -->
+        {% if result %}
+        <div class="card shadow-sm border-start border-success border-4">
+            <div class="card-header bg-success text-white">
+                <i class="bi bi-stars me-1"></i>AI Course Recommendations
+            </div>
+            <div class="card-body ai-response">
+                {{ result | safe }}
+            </div>
+            <div class="card-footer text-end">
+                <form method="POST" action="{{ url_for('courses.email_report') }}" class="d-inline">
+                    <input type="hidden" name="report_body" value="{{ result }}">
+                    <button type="submit" class="btn btn-sm btn-outline-success">
+                        <i class="bi bi-envelope me-1"></i>Email This Report
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

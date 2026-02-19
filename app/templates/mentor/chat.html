@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}AI Career Mentor{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <!-- Goals Card -->
+        {% if not goals %}
+        <div class="card shadow-sm border-0 mb-4 border-start border-4 border-warning">
+            <div class="card-body">
+                <h6 class="fw-bold"><i class="bi bi-bullseye text-warning me-2"></i>Set Your Career Goals</h6>
+                <form method="POST" action="{{ url_for('mentor.chat') }}">
+                    <input type="hidden" name="action" value="set_goals">
+                    <textarea name="goals" class="form-control mb-2" rows="2" placeholder="e.g. Become a senior data scientist in 2 years, transition to product management..." required></textarea>
+                    <button type="submit" class="btn btn-warning btn-sm">Set Goals & Start</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-light border d-flex justify-content-between align-items-center mb-3">
+            <span><i class="bi bi-bullseye text-warning me-1"></i><strong>Goals:</strong> {{ goals | truncate(100) }}</span>
+            <form method="POST" action="{{ url_for('mentor.clear') }}" class="d-inline">
+                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-arrow-clockwise me-1"></i>Reset</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Chat Window -->
+        <div class="card shadow border-0">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="bi bi-mortarboard me-2"></i>Your AI Career Mentor</h5>
+            </div>
+            <div class="card-body p-0">
+                <div id="chatWindow" style="height: 450px; overflow-y: auto; padding: 1.5rem; background: #f8f9fa;">
+                    {% set messages = session.get('mentor_messages', []) %}
+                    {% for msg in messages %}
+                        {% if msg.role == 'assistant' %}
+                        <div class="d-flex mb-3">
+                            <div class="me-2"><span class="badge bg-dark rounded-circle p-2"><i class="bi bi-mortarboard"></i></span></div>
+                            <div class="bg-white rounded-3 p-3 shadow-sm" style="max-width: 80%;">
+                                <div class="ai-response">{{ msg.content }}</div>
+                            </div>
+                        </div>
+                        {% elif msg.role == 'user' %}
+                        <div class="d-flex mb-3 justify-content-end">
+                            <div class="bg-dark text-white rounded-3 p-3 shadow-sm" style="max-width: 80%;">
+                                {{ msg.content }}
+                            </div>
+                            <div class="ms-2"><span class="badge bg-secondary rounded-circle p-2"><i class="bi bi-person"></i></span></div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="p-3 border-top bg-white">
+                    <form method="POST" action="{{ url_for('mentor.chat') }}">
+                        <input type="hidden" name="action" value="send">
+                        <div class="input-group">
+                            <input type="text" name="message" class="form-control form-control-lg" placeholder="Ask your mentor anything..." autofocus required id="voiceInput">
+                            <button type="button" class="btn btn-outline-secondary" onclick="startVoiceInput('voiceInput')" title="Voice input">
+                                <i class="bi bi-mic"></i>
+                            </button>
+                            <button type="submit" class="btn btn-dark" id="searchBtn"><i class="bi bi-send me-1"></i>Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const chatWindow = document.getElementById('chatWindow');
+    if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
+</script>
+{% endblock %}

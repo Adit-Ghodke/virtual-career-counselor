@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Virtual Career Counselor{% endblock %}
+{% block content %}
+<div class="text-center mb-5">
+    <h2 class="fw-bold">Welcome, {{ session.get('user_name', 'User') }}! 👋</h2>
+    <p class="text-muted">Your AI-powered career command center — 27 tools to supercharge your career.</p>
+</div>
+
+<!-- Core Tools Row -->
+<h5 class="text-muted mb-3"><i class="bi bi-lightning-charge me-1"></i>Core Tools</h5>
+<div class="row g-4 mb-5">
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-4">
+                <i class="bi bi-compass display-3 text-primary mb-3"></i>
+                <h5 class="card-title">Career Path Explorer</h5>
+                <p class="card-text text-muted">AI-generated overview of any career — skills, certifications, roles, timeline.</p>
+                <a href="{{ url_for('career.explore') }}" class="btn btn-outline-primary">Explore Careers</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-4">
+                <i class="bi bi-book display-3 text-success mb-3"></i>
+                <h5 class="card-title">Course Recommendations</h5>
+                <p class="card-text text-muted">Get AI-curated courses from Coursera, Udemy, and top platforms.</p>
+                <a href="{{ url_for('courses.recommend') }}" class="btn btn-outline-success">Get Recommendations</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-4">
+                <i class="bi bi-graph-up display-3 text-warning mb-3"></i>
+                <h5 class="card-title">Market Insights</h5>
+                <p class="card-text text-muted">AI-powered job market data — salaries, demand, skills & hiring trends.</p>
+                <a href="{{ url_for('insights.market') }}" class="btn btn-outline-warning">View Insights</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-4">
+                <i class="bi bi-chat-dots display-3 text-info mb-3"></i>
+                <h5 class="card-title">AI Career Chatbot</h5>
+                <p class="card-text text-muted">Free-form conversation — ask anything about careers, jobs, skills.</p>
+                <a href="{{ url_for('chatbot.start') }}" class="btn btn-outline-info">Start Chat</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AI Power Tools Row -->
+<h5 class="text-muted mb-3"><i class="bi bi-stars me-1"></i>AI Power Tools</h5>
+<div class="row g-4 mb-5">
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-success">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-file-earmark-person display-4 text-success mb-2"></i>
+                <h6 class="card-title">Resume Analysis</h6>
+                <p class="card-text text-muted small">Upload your resume for AI analysis & job matching.</p>
+                <a href="{{ url_for('resume.upload') }}" class="btn btn-sm btn-outline-success">Upload Resume</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-info">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-signpost-split display-4 text-info mb-2"></i>
+                <h6 class="card-title">Learning Path</h6>
+                <p class="card-text text-muted small">Get a week-by-week roadmap with progress tracking.</p>
+                <a href="{{ url_for('learning.roadmap') }}" class="btn btn-sm btn-outline-info">Generate Path</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-warning">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-cash-stack display-4 text-warning mb-2"></i>
+                <h6 class="card-title">Salary Negotiation</h6>
+                <p class="card-text text-muted small">Practice negotiation with an AI HR Manager.</p>
+                <a href="{{ url_for('negotiation.start') }}" class="btn btn-sm btn-outline-warning">Start Simulation</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-dark">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-person-video3 display-4 text-dark mb-2"></i>
+                <h6 class="card-title">Interview Prep</h6>
+                <p class="card-text text-muted small">Company-specific mock interviews with scoring.</p>
+                <a href="{{ url_for('interview.start') }}" class="btn btn-sm btn-outline-dark">Practice Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New v3.0 Tools -->
+<h5 class="text-muted mb-3"><i class="bi bi-rocket-takeoff me-1"></i>New v3.0 Features</h5>
+<div class="row g-4 mb-5">
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-danger">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-bar-chart-line display-4 text-danger mb-2"></i>
+                <h6 class="card-title">Skill Gap Heatmap</h6>
+                <p class="card-text text-muted small">Visual chart of your skills vs role requirements.</p>
+                <a href="{{ url_for('skill_gap.analyze') }}" class="btn btn-sm btn-outline-danger">Analyze Gap</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-dark">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-github display-4 mb-2"></i>
+                <h6 class="card-title">GitHub Analyzer</h6>
+                <p class="card-text text-muted small">AI analysis of any GitHub profile & repos.</p>
+                <a href="{{ url_for('github_analyzer.analyze') }}" class="btn btn-sm btn-outline-dark">Analyze</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-primary">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-envelope-paper display-4 text-primary mb-2"></i>
+                <h6 class="card-title">Cover Letter</h6>
+                <p class="card-text text-muted small">Generate tailored cover letters with AI.</p>
+                <a href="{{ url_for('cover_letter.generate') }}" class="btn btn-sm btn-outline-primary">Generate</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-info">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-people-fill display-4 text-info mb-2"></i>
+                <h6 class="card-title">Mock Group Discussion</h6>
+                <p class="card-text text-muted small">Practice GD with AI panelists.</p>
+                <a href="{{ url_for('group_discussion.start') }}" class="btn btn-sm btn-outline-info">Start GD</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Advanced Tools Row -->
+<div class="row g-4 mb-5">
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-danger">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-arrow-left-right display-4 text-danger mb-2"></i>
+                <h6 class="card-title">Career Pivot</h6>
+                <p class="card-text text-muted small">Analyze transferable skills for career switches.</p>
+                <a href="{{ url_for('pivot.analyze') }}" class="btn btn-sm btn-outline-danger">Analyze Pivot</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-primary">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-graph-up-arrow display-4 text-primary mb-2"></i>
+                <h6 class="card-title">Market Trends</h6>
+                <p class="card-text text-muted small">Real-time AI insights on industry hiring trends.</p>
+                <a href="{{ url_for('trends.dashboard') }}" class="btn btn-sm btn-outline-primary">View Trends</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-secondary">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-people display-4 text-secondary mb-2"></i>
+                <h6 class="card-title">Peer Comparison</h6>
+                <p class="card-text text-muted small">Benchmark your skills against industry peers.</p>
+                <a href="{{ url_for('peers.compare') }}" class="btn btn-sm btn-outline-secondary">Compare Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-success">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-database-fill-gear display-4 text-success mb-2"></i>
+                <h6 class="card-title">Smart Career Search</h6>
+                <p class="card-text text-muted small">Data-grounded career answers powered by AI.</p>
+                <a href="{{ url_for('job_match.match') }}" class="btn btn-sm btn-outline-success">Ask AI</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Utility Tools -->
+<h5 class="text-muted mb-3"><i class="bi bi-tools me-1"></i>Utilities & Social</h5>
+<div class="row g-4 mb-5">
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-mortarboard display-4 text-dark mb-2"></i>
+                <h6 class="card-title">AI Mentor</h6>
+                <p class="card-text text-muted small">Persistent mentor chat with career memory.</p>
+                <a href="{{ url_for('mentor.chat') }}" class="btn btn-sm btn-outline-dark">Talk to Mentor</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-clock-history display-4 text-primary mb-2"></i>
+                <h6 class="card-title">Query History</h6>
+                <p class="card-text text-muted small">Browse, bookmark & export past AI results.</p>
+                <a href="{{ url_for('history.index') }}" class="btn btn-sm btn-outline-primary">View History</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-newspaper display-4 text-info mb-2"></i>
+                <h6 class="card-title">Weekly Digest</h6>
+                <p class="card-text text-muted small">AI career newsletter customized for you.</p>
+                <a href="{{ url_for('digest.preferences') }}" class="btn btn-sm btn-outline-info">Configure</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-building display-4 text-secondary mb-2"></i>
+                <h6 class="card-title">Classrooms</h6>
+                <p class="card-text text-muted small">Team/classroom mode for shared learning.</p>
+                <a href="{{ url_for('classroom.index') }}" class="btn btn-sm btn-outline-secondary">Manage</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Badges Row -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4 mx-auto">
+        <div class="card h-100 shadow-sm border-0 border-top border-3 border-warning">
+            <div class="card-body text-center p-3">
+                <i class="bi bi-trophy display-4 text-warning mb-2"></i>
+                <h6 class="card-title">Badges & Leaderboard</h6>
+                <p class="card-text text-muted small">Earn badges and compete on the leaderboard.</p>
+                <a href="{{ url_for('gamification.badges') }}" class="btn btn-sm btn-outline-warning">View Badges</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

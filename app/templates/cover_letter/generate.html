@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Cover Letter Generator{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <h3 class="fw-bold mb-4"><i class="bi bi-envelope-paper me-2 text-primary"></i>Cover Letter Generator</h3>
+
+        <form method="POST" class="mb-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Company Name *</label>
+                    <input type="text" name="company_name" class="form-control" placeholder="e.g. Google, TCS, Infosys" required>
+                </div>
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Job Description *</label>
+                    <textarea name="job_description" class="form-control" rows="5" placeholder="Paste the full job description here..." required></textarea>
+                </div>
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Your Resume / Background (optional)</label>
+                    <textarea name="resume_text" class="form-control" rows="4" placeholder="Paste your resume text or key highlights..."></textarea>
+                    <small class="text-muted">Adding your background helps generate a more tailored letter.</small>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-lg" id="searchBtn">
+                        <i class="bi bi-magic me-1"></i>Generate Cover Letter
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        {% if result %}
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-header bg-success text-white d-flex justify-content-between">
+                <span><i class="bi bi-envelope-check me-2"></i>Your AI-Generated Cover Letter</span>
+                <button class="btn btn-sm btn-outline-light" onclick="copyToClipboard()"><i class="bi bi-clipboard me-1"></i>Copy</button>
+            </div>
+            <div class="card-body">
+                <div class="ai-response" id="coverLetterContent">{{ result }}</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function copyToClipboard() {
+    const text = document.getElementById('coverLetterContent').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Cover letter copied to clipboard!');
+    });
+}
+</script>
+{% endblock %}

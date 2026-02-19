@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Query Detail{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <a href="{{ url_for('history.index') }}" class="btn btn-outline-secondary mb-3"><i class="bi bi-arrow-left me-1"></i>Back to History</a>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white d-flex justify-content-between">
+                <span><i class="bi bi-file-text me-2"></i>{{ query.query_type | default('unknown') | replace('_', ' ') | title }} Report</span>
+                <div>
+                    <a href="{{ url_for('history.export_pdf', query_id=query.query_id) }}" class="btn btn-sm btn-outline-light me-1">
+                        <i class="bi bi-file-pdf me-1"></i>Export PDF
+                    </a>
+                    <form method="POST" action="{{ url_for('history.add_bookmark') }}" class="d-inline">
+                        <input type="hidden" name="query_id" value="{{ query.query_id }}">
+                        <input type="hidden" name="title" value="{{ query.input_text | default('Untitled') | truncate(50) }}">
+                        <input type="hidden" name="query_type" value="{{ query.query_type | default('unknown') }}">
+                        <button class="btn btn-sm btn-outline-warning"><i class="bi bi-star me-1"></i>Bookmark</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Input:</strong>
+                    <p class="text-muted">{{ query.input_text | default('N/A') }}</p>
+                </div>
+                <div class="mb-3">
+                    <strong>Date:</strong>
+                    <span class="text-muted">{{ query.created_at | default('N/A') }}</span>
+                </div>
+                <hr>
+                <div class="ai-response">{{ query.ai_response | default('No response') }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

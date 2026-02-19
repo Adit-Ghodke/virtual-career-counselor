@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Interview Prep — Virtual Career Counselor{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h3 class="mb-4"><i class="bi bi-person-video3 me-2 text-primary"></i>Interview Prep Simulator</h3>
+
+        {% if not conversation %}
+        <!-- Start Form -->
+        <form method="POST" action="{{ url_for('interview.begin') }}" class="card shadow-sm mb-4">
+            <div class="card-body">
+                <p class="text-muted mb-3">Practice interviews tailored to specific companies and roles. AI will ask 5 questions and score your answers.</p>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="company" class="form-label fw-semibold">Target Company</label>
+                        <select class="form-select" id="company" name="company" required>
+                            <option value="" disabled selected>Select company…</option>
+                            {% for c in companies %}
+                            <option value="{{ c }}">{{ c }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="role" class="form-label fw-semibold">Target Role</label>
+                        <select class="form-select" id="role" name="role" required>
+                            <option value="" disabled selected>Select role…</option>
+                            {% for r in roles %}
+                            <option value="{{ r }}">{{ r }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="experience" class="form-label fw-semibold">Experience Level</label>
+                        <select class="form-select" id="experience" name="experience">
+                            <option value="Entry Level (0-2 yrs)">Entry Level (0-2 yrs)</option>
+                            <option value="Mid Level (3-5 yrs)" selected>Mid Level (3-5 yrs)</option>
+                            <option value="Senior Level (5-10 yrs)">Senior Level (5-10 yrs)</option>
+                            <option value="Lead / Staff (10+ yrs)">Lead / Staff (10+ yrs)</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">
+                    <i class="bi bi-play-fill me-1"></i>Start Mock Interview
+                </button>
+            </div>
+        </form>
+
+        {% else %}
+        <!-- Interview Chat -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark text-white d-flex justify-content-between">
+                <span><i class="bi bi-chat-quote me-1"></i>{{ session.get('interview_meta', {}).get('company', 'Interview') }} Interview</span>
+                <span class="badge bg-light text-dark">Q {{ question_num }} / 5</span>
+            </div>
+            <div class="card-body" style="max-height: 500px; overflow-y: auto" id="chatBox">
+                {% for msg in conversation %}
+                {% if msg.role == 'user' or msg.role == 'assistant' %}
+                <div class="mb-3 p-3 rounded {% if msg.role == 'user' %}bg-primary bg-opacity-10 text-end{% else %}bg-light{% endif %}">
+                    {% if msg.role == 'user' %}
+                    <small class="text-primary fw-semibold"><i class="bi bi-person-fill me-1"></i>You</small>
+                    {% else %}
+                    <small class="text-dark fw-semibold"><i class="bi bi-building me-1"></i>Interviewer</small>
+                    {% endif %}
+                    <div class="mt-1 ai-response">{{ msg.content | safe }}</div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if not finished %}
+            <div class="card-footer">
+                <form method="POST" action="{{ url_for('interview.answer') }}">
+                    <div class="input-group">
+                        <textarea class="form-control" name="user_reply" rows="2" required
+                                  placeholder="Type your answer…" maxlength="2000"></textarea>
+                        <button type="submit" class="btn btn-dark">
+                            <i class="bi bi-send me-1"></i>Answer
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {% else %}
+            <div class="card-footer text-center">
+                <a href="{{ url_for('interview.start') }}" class="btn btn-outline-dark">
+                    <i class="bi bi-arrow-repeat me-1"></i>New Interview
+                </a>
+                <a href="{{ url_for('gamification.badges') }}" class="btn btn-outline-success ms-2">
+                    <i class="bi bi-trophy me-1"></i>View Badges
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    const cb = document.getElementById('chatBox');
+    if (cb) cb.scrollTop = cb.scrollHeight;
+</script>
+{% endblock %}

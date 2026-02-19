@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Learning Path — Virtual Career Counselor{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <h3 class="mb-4"><i class="bi bi-signpost-split me-2 text-primary"></i>Personalized Learning Path</h3>
+
+        <!-- Generation Form -->
+        <form method="POST" action="{{ url_for('learning.roadmap') }}" class="card shadow-sm mb-4">
+            <div class="card-body">
+                <p class="text-muted mb-3">Enter your target role and current skills. AI will create a week-by-week learning roadmap with resources.</p>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="target_role" class="form-label fw-semibold">Target Role</label>
+                        <input type="text" class="form-control" id="target_role" name="target_role"
+                               placeholder="e.g. Machine Learning Engineer" required maxlength="200"
+                               value="{{ form_data.get('target_role', '') }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="current_skills" class="form-label fw-semibold">Current Skills</label>
+                        <input type="text" class="form-control" id="current_skills" name="current_skills"
+                               placeholder="e.g. Python, SQL, basic stats" required maxlength="500"
+                               value="{{ form_data.get('current_skills', '') }}">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">
+                    <i class="bi bi-map me-1"></i>Generate Learning Path
+                </button>
+            </div>
+        </form>
+
+        <!-- AI Roadmap Result -->
+        {% if result %}
+        <div class="card shadow-sm border-start border-info border-4 mb-4">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-stars me-1"></i>Your Learning Roadmap</span>
+                {% if progress_id %}
+                <span class="badge bg-light text-dark">Tracking Active</span>
+                {% endif %}
+            </div>
+            <div class="card-body ai-response">
+                {{ result | safe }}
+            </div>
+        </div>
+
+        <!-- Progress Tracker -->
+        {% if progress_id %}
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold">
+                <i class="bi bi-check2-square me-1 text-success"></i>Track Your Progress
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('learning.update_progress') }}">
+                    <input type="hidden" name="progress_id" value="{{ progress_id }}">
+                    <div class="row g-2">
+                        {% for i in range(1, 9) %}
+                        <div class="col-md-3 col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="weeks" value="{{ i }}"
+                                       id="week{{ i }}" {% if i|string in completed_weeks %}checked{% endif %}>
+                                <label class="form-check-label" for="week{{ i }}">Week {{ i }}</label>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">
+                        <i class="bi bi-save me-1"></i>Save Progress
+                    </button>
+                </form>
+
+                <!-- Progress Bar -->
+                {% set pct = ((completed_weeks | length) / 8 * 100) | int %}
+                <div class="mt-3">
+                    <div class="progress" style="height: 25px">
+                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                             id="learningProgress"
+                             role="progressbar" aria-valuenow="{{ pct }}" aria-valuemin="0" aria-valuemax="100">
+                            {{ pct }}%
+                        </div>
+                    </div>
+                </div>
+                <script>document.getElementById('learningProgress').style.width = '{{ pct }}%';</script>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

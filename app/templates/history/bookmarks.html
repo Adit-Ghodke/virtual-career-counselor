@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Bookmarks{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0"><i class="bi bi-star-fill text-warning me-2"></i>Bookmarked Reports</h3>
+            <a href="{{ url_for('history.index') }}" class="btn btn-outline-primary"><i class="bi bi-clock-history me-1"></i>All History</a>
+        </div>
+
+        {% if bookmarks %}
+        <div class="row g-3">
+            {% for b in bookmarks %}
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <span class="badge bg-primary mb-2">{{ b.query_type | replace('_', ' ') | title }}</span>
+                                <h6>{{ b.title }}</h6>
+                                <small class="text-muted">{{ b.created_at | default('') | truncate(10, True, '') }}</small>
+                            </div>
+                            <div>
+                                <a href="{{ url_for('history.detail', query_id=b.query_id) }}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-eye"></i></a>
+                                <form method="POST" action="{{ url_for('history.remove_bookmark') }}" class="d-inline">
+                                    <input type="hidden" name="bookmark_id" value="{{ b.bookmark_id }}">
+                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center text-muted py-5">
+            <i class="bi bi-star display-1"></i>
+            <p class="mt-3">No bookmarks yet. Star your favorite reports from the history page!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

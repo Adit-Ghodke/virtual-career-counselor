@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Job Market Insights — Virtual Career Counselor{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h3 class="mb-4"><i class="bi bi-graph-up me-2 text-info"></i>Job Market Insights</h3>
+
+        <!-- Search Form -->
+        <form method="POST" action="{{ url_for('insights.market') }}" class="card shadow-sm mb-4">
+            <div class="card-body">
+                <label for="role_name" class="form-label fw-semibold">Enter a job role or industry</label>
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" id="role_name" name="role_name"
+                           placeholder="e.g. Cloud Engineer, FinTech, Cybersecurity"
+                           value="{{ role_name }}" required maxlength="300">
+                    <button type="submit" class="btn btn-info btn-lg text-white" id="searchBtn">
+                        <i class="bi bi-bar-chart me-1"></i>Get Insights
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- AI Result -->
+        {% if result %}
+        <div class="card shadow-sm border-start border-info border-4">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-stars me-1"></i>AI Market Insights: <strong>{{ role_name }}</strong></span>
+            </div>
+            <div class="card-body ai-response">
+                {{ result | safe }}
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Disclaimer: These insights are AI-generated estimates, not live job board data.</small>
+                    <form method="POST" action="{{ url_for('insights.email_report') }}" class="d-inline">
+                        <input type="hidden" name="report_body" value="{{ result }}">
+                        <button type="submit" class="btn btn-sm btn-outline-info">
+                            <i class="bi bi-envelope me-1"></i>Email Report
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

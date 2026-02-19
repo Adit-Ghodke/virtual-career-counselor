@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Classrooms{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <h3 class="fw-bold mb-4"><i class="bi bi-building me-2 text-purple"></i>Team / Classroom Mode</h3>
+
+        <div class="row g-4 mb-5">
+            <!-- Create -->
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-primary text-white"><i class="bi bi-plus-circle me-2"></i>Create Classroom</div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('classroom.create') }}">
+                            <input type="text" name="name" class="form-control mb-2" placeholder="Classroom name (e.g. MCA Batch 2026)" required>
+                            <button class="btn btn-primary w-100"><i class="bi bi-plus me-1"></i>Create</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Join -->
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-success text-white"><i class="bi bi-box-arrow-in-right me-2"></i>Join Classroom</div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('classroom.join') }}">
+                            <input type="text" name="code" class="form-control mb-2 text-uppercase" placeholder="Enter 8-char join code" maxlength="8" required>
+                            <button class="btn btn-success w-100"><i class="bi bi-door-open me-1"></i>Join</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Classrooms -->
+        <h5 class="fw-bold mb-3">My Classrooms</h5>
+        {% if classrooms %}
+        <div class="row g-3">
+            {% for c in classrooms %}
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ c.name }}</h5>
+                        <p class="text-muted mb-1"><i class="bi bi-key me-1"></i>Code: <strong class="text-primary">{{ c.join_code }}</strong></p>
+                        <p class="text-muted mb-2"><i class="bi bi-people me-1"></i>{{ c.members | length }} member(s)</p>
+                        <a href="{{ url_for('classroom.view', classroom_id=c.classroom_id) }}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye me-1"></i>View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center text-muted py-4">
+            <i class="bi bi-building display-3"></i>
+            <p class="mt-2">No classrooms yet. Create one or join with a code!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

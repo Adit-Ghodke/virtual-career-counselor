@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Virtual Career Counselor{% endblock %}</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
+                <i class="bi bi-mortarboard-fill me-2"></i>Virtual Career Counselor
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                {% if session.get('user_id') %}
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('career.explore') }}"><i class="bi bi-compass me-1"></i>Career Path</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('courses.recommend') }}"><i class="bi bi-book me-1"></i>Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('insights.market') }}"><i class="bi bi-graph-up me-1"></i>Insights</a>
+                    </li>
+                    <!-- AI Tools Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-stars me-1"></i>AI Tools
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg">
+                            <li><h6 class="dropdown-header">Analysis</h6></li>
+                            <li><a class="dropdown-item" href="{{ url_for('resume.upload') }}"><i class="bi bi-file-earmark-person me-2"></i>Resume Analysis</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('skill_gap.analyze') }}"><i class="bi bi-bar-chart-line me-2"></i>Skill Gap Heatmap</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('github_analyzer.analyze') }}"><i class="bi bi-github me-2"></i>GitHub Analyzer</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Practice</h6></li>
+                            <li><a class="dropdown-item" href="{{ url_for('negotiation.start') }}"><i class="bi bi-cash-stack me-2"></i>Salary Negotiation</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('interview.start') }}"><i class="bi bi-person-video3 me-2"></i>Interview Prep</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('group_discussion.start') }}"><i class="bi bi-people-fill me-2"></i>Mock Group Discussion</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Generate</h6></li>
+                            <li><a class="dropdown-item" href="{{ url_for('cover_letter.generate') }}"><i class="bi bi-envelope-paper me-2"></i>Cover Letter</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('learning.roadmap') }}"><i class="bi bi-signpost-split me-2"></i>Learning Path</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Explore</h6></li>
+                            <li><a class="dropdown-item" href="{{ url_for('pivot.analyze') }}"><i class="bi bi-arrow-left-right me-2"></i>Career Pivot</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('trends.dashboard') }}"><i class="bi bi-graph-up-arrow me-2"></i>Market Trends</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('peers.compare') }}"><i class="bi bi-people me-2"></i>Peer Comparison</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('job_match.match') }}"><i class="bi bi-database-fill-gear me-2"></i>Smart Career Search</a></li>
+                        </ul>
+                    </li>
+                    <!-- Smart Tools -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-lightning-charge me-1"></i>More
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('chatbot.start') }}"><i class="bi bi-chat-dots me-2"></i>AI Chatbot</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('mentor.chat') }}"><i class="bi bi-mortarboard me-2"></i>AI Mentor</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('history.index') }}"><i class="bi bi-clock-history me-2"></i>Query History</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('history.bookmarks') }}"><i class="bi bi-star me-2"></i>Bookmarks</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('digest.preferences') }}"><i class="bi bi-newspaper me-2"></i>Weekly Digest</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('classroom.index') }}"><i class="bi bi-building me-2"></i>Classrooms</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('gamification.badges') }}"><i class="bi bi-trophy me-2 text-warning"></i>Badges</a></li>
+                        </ul>
+                    </li>
+                    {% if session.get('role') == 'admin' %}
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="{{ url_for('admin.dashboard') }}"><i class="bi bi-speedometer2 me-1"></i>Admin</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav">
+                    <!-- Dark Mode Toggle -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="darkModeToggle" title="Toggle dark mode">
+                            <i class="bi bi-moon-fill" id="darkModeIcon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link text-light"><i class="bi bi-person-circle me-1"></i>{{ session.get('user_name', 'User') }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}"><i class="bi bi-box-arrow-right me-1"></i>Logout</a>
+                    </li>
+                </ul>
+                {% else %}
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content -->
+    <main class="container my-4 flex-grow-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light text-center py-3 mt-auto">
+        <small>&copy; 2026 Virtual Career Counselor v3.0 &mdash; Powered by Groq AI, Tavily Search &amp; AWS | 27 Features</small>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
