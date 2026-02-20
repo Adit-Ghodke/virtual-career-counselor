@@ -20,9 +20,31 @@ p { line-height: 1.6; }
 .footer { text-align: center; color: #999; font-size: 10px; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px; }
 strong { color: #0d6efd; }
 code { background: #f8f9fa; padding: 2px 5px; border-radius: 3px; font-size: 11px; }
-table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-th { background: #0d6efd; color: white; padding: 8px; text-align: left; }
-td { padding: 6px 8px; border-bottom: 1px solid #eee; }
+table {
+    width: 100%;
+    margin-bottom: 15pt;
+    -pdf-keep-with-next: true;
+}
+th, td {
+    padding: 6pt;
+    border-bottom-width: 1pt;
+    border-bottom-style: solid;
+    border-bottom-color: #aaaaaa;
+    border-top-width: 1pt;
+    border-top-style: solid;
+    border-top-color: #aaaaaa;
+    border-left-width: 1pt;
+    border-left-style: solid;
+    border-left-color: #aaaaaa;
+    border-right-width: 1pt;
+    border-right-style: solid;
+    border-right-color: #aaaaaa;
+}
+th {
+    background-color: #f2f4f8;
+    font-weight: bold;
+    text-align: left;
+}
 """
 
 
