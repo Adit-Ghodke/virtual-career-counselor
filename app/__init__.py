@@ -24,7 +24,7 @@ def create_app() -> Flask:
 
     # ── Register custom Jinja2 filters ───────────────────────────
     @app.template_filter("md")
-    def render_markdown(text: str) -> Markup:
+    def render_markdown(text: str) -> Markup:  # pyright: ignore[reportUnusedFunction]
         """Convert Markdown text to HTML with table support."""
         if not text:
             return Markup("")
