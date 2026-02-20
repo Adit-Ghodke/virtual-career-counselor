@@ -7,6 +7,10 @@ from xhtml2pdf import pisa  # type: ignore[import-untyped]
 
 
 _CSS = """
+@page {
+    size: letter;
+    margin: 1cm;
+}
 body { font-family: Helvetica, Arial, sans-serif; font-size: 12px; color: #333; margin: 30px; }
 h1 { color: #0d6efd; font-size: 22px; border-bottom: 2px solid #0d6efd; padding-bottom: 8px; }
 h2 { color: #333; font-size: 16px; margin-top: 18px; }

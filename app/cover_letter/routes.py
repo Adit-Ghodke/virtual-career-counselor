@@ -8,6 +8,7 @@ from werkzeug.wrappers import Response
 from app.auth.utils import login_required
 from app.services.groq_service import generate_cover_letter
 from app.services.dynamo_service import save_query
+from app.services.resume_parser import parse_resume
 
 cover_letter_bp = Blueprint("cover_letter", __name__, url_prefix="/cover-letter", template_folder="../templates")
 
@@ -21,6 +22,19 @@ def generate() -> Union[str, Response]:
         resume_text = request.form.get("resume_text", "").strip()
         job_description = request.form.get("job_description", "").strip()
         company_name = request.form.get("company_name", "").strip()
+
+        # Handle PDF/DOCX upload — extract text and merge with pasted text
+        resume_file = request.files.get("resume_file")
+        if resume_file and resume_file.filename:
+            try:
+                extracted: str = parse_resume(resume_file, resume_file.filename)
+                resume_text = f"{extracted}\n\n{resume_text}".strip() if resume_text else extracted
+            except ValueError as ve:
+                flash(str(ve), "warning")
+                return render_template("cover_letter/generate.html", result=None)
+            except Exception:
+                flash("Could not read the uploaded file. Please paste your resume instead.", "warning")
+                return render_template("cover_letter/generate.html", result=None)
 
         if not job_description or not company_name:
             flash("Please provide at least the job description and company name.", "warning")
