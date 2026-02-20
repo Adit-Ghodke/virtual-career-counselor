@@ -2,10 +2,11 @@
 
 **Project:** Virtual Career Counselor  
 **Version:** v3.0 (February 2026)  
-**Tech Stack:** Flask 3.1 + Groq API (Llama 3.3 70B) + AWS (EC2, DynamoDB, SNS, IAM) + Bootstrap 5.3 + Chart.js 4.4  
+**Live URL:** [https://virtual-career-counselor.onrender.com](https://virtual-career-counselor.onrender.com)  
+**Tech Stack:** Flask 3.1 + Groq API (Llama 3.3 70B) + AWS (DynamoDB, SNS, IAM) + Render.com (PaaS Hosting) + Bootstrap 5.3 + Chart.js 4.4  
 **Target:** Fully deployed, feature-rich MVP by end of today  
 **New in v2.0:** 8 killer AI-powered features — Resume Analysis, Learning Path, Salary Negotiation Simulator, Interview Prep, Career Pivot Analyzer, Market Trends Dashboard, Peer Comparison, Gamification (Badges & Leaderboard)  
-**New in v3.0:** 16 advanced features — AI Chatbot (RAG-enhanced), Cover Letter Generator, GitHub Profile Analyzer, Skill Gap Heatmap, Query History & PDF Export, Dark Mode, Bookmarks, Voice Input, Mock Group Discussion, AI Mentor Chat, RAG Job Matching, Weekly Digest, Team/Classroom Mode, Multi-language support
+**New in v3.0:** 16 advanced features — AI Chatbot (Tavily-enhanced), Cover Letter Generator, GitHub Profile Analyzer, Skill Gap Heatmap, Query History & PDF Export, Dark Mode, Bookmarks, Voice Input, Mock Group Discussion, AI Mentor Chat, Smart Career Search, Weekly Digest, Team/Classroom Mode, Multi-language support
 
 ## IMPORTANT — Use Context7 for Latest Tech
 
@@ -13,7 +14,7 @@ Before implementing any major feature, use Context7 to fetch the latest official
 - Flask and Flask-Session
 - Groq Python SDK
 - boto3 (DynamoDB, SNS, IAM usage)
-- Gunicorn and Nginx deployment best practices
+- Gunicorn deployment best practices (Render PaaS)
 
 This is mandatory for this project to avoid outdated code patterns and to ensure you use current libraries, APIs, and recommended configurations.
 
@@ -39,7 +40,7 @@ This is mandatory for this project to avoid outdated code patterns and to ensure
 - **Phase 12 (30 min):** Real-Time Market Trends Dashboard (AI)
 - **Phase 13 (30 min):** Peer Comparison & Benchmarking (AI)
 - **Phase 14 (30 min):** Gamification — Badges & Leaderboard + 3 new DynamoDB tables
-- **Phase 15 (30 min):** AI Chatbot with RAG toggle
+- **Phase 15 (30 min):** AI Chatbot with Tavily web search
 - **Phase 16 (30 min):** Cover Letter Generator (AI)
 - **Phase 17 (30 min):** GitHub Profile Analyzer (GitHub API + AI)
 - **Phase 18 (30 min):** Skill Gap Heatmap (AI + Chart.js)
@@ -49,15 +50,15 @@ This is mandatory for this project to avoid outdated code patterns and to ensure
 - **Phase 22 (15 min):** Voice Input (Web Speech API)
 - **Phase 23 (45 min):** Mock Group Discussion (multi-round AI-moderated)
 - **Phase 24 (30 min):** AI Mentor Chat (persistent goal-based mentorship)
-- **Phase 25 (30 min):** RAG Job Matching (TF-IDF knowledge base)
+- **Phase 25 (30 min):** Smart Career Search (Tavily AI web search)
 - **Phase 26 (30 min):** Weekly Career Digest (15 industries)
 - **Phase 27 (30 min):** Team/Classroom Mode (create/join/share)
 - **Phase 28 (60 min):** Navigation overhaul + Dashboard redesign (22 features)
 - **Phase 29 (90 min):** QA + bug fix pass + hardening
-- **Phase 30 (60 min):** EC2 deployment with Gunicorn + Nginx + go-live checks
+- **Phase 30 (60 min):** Render.com deployment with Gunicorn + auto-deploy + go-live checks
 
 ### Critical Path
-Environment setup → Auth → Career AI → Course AI → Insights AI → SNS → Admin → Resume → Learning Path → Negotiation → Interview → Pivot → Trends → Peers → Gamification → Chatbot → Cover Letter → GitHub → Skill Gap → History/PDF → Bookmarks → Dark Mode → Voice → GD → Mentor → RAG Job Match → Digest → Classroom → Nav/Dashboard → QA → Deployment.
+Environment setup → Auth → Career AI → Course AI → Insights AI → SNS → Admin → Resume → Learning Path → Negotiation → Interview → Pivot → Trends → Peers → Gamification → Chatbot → Cover Letter → GitHub → Skill Gap → History/PDF → Bookmarks → Dark Mode → Voice → GD → Mentor → Smart Career Search → Digest → Classroom → Nav/Dashboard → QA → Deployment.
 
 ---
 
@@ -151,7 +152,6 @@ virtual-career-counselor/
 │   │   ├── auth_service.py
 │   │   ├── health_service.py
 │   │   ├── resume_parser.py
-│   │   ├── rag_service.py          # v3.0 — lightweight TF-IDF RAG engine
 │   │   └── pdf_service.py          # v3.0 — xhtml2pdf report generator
 │   ├── templates/
 │   │   ├── base.html
@@ -221,7 +221,6 @@ virtual-career-counselor/
 │   ├── test_career.py
 │   ├── test_courses.py
 │   └── test_insights.py
-├── rag_store.json                  # v3.0 — TF-IDF knowledge base storage
 ├── .env
 ├── .env.example
 ├── .gitignore
@@ -244,6 +243,7 @@ virtual-career-counselor/
 - [ ] Create base project folders and starter files (see structure above).
 - [ ] Configure `.env` and `.env.example` with all required variables.
 - [ ] Build Flask app factory in `app/__init__.py` and register all blueprints.
+- [ ] Register global Jinja2 `md` filter (markdown → HTML with `tables`, `fenced_code`, `nl2br` extensions) so templates can use `{{ content | md | safe }}`.
 - [ ] Add base template with navigation, flash messages, and responsive layout.
 - [ ] Add global error handlers (`404`, `500`) and logging setup.
 
@@ -377,8 +377,8 @@ virtual-career-counselor/
 **Goal:** Let users upload PDF/DOCX resumes and get AI-powered analysis with job matching.
 
 ### Tasks
-- [ ] Create `resume_parser.py` service with PDF (PyPDF2) and DOCX (python-docx) text extraction.
-- [ ] Install `PyPDF2` and `python-docx` dependencies.
+- [ ] Create `resume_parser.py` service with PDF (pypdf) and DOCX (python-docx) text extraction.
+- [ ] Install `pypdf` and `python-docx` dependencies.
 - [ ] Implement `analyze_resume()` in `groq_service.py` with structured prompt (strengths, gaps, ATS score, matching roles).
 - [ ] Create `/resume/` upload route with file validation (PDF/DOCX, max 5 MB).
 - [ ] Create `resume/upload.html` template with file upload form and AI result display.
@@ -520,21 +520,22 @@ virtual-career-counselor/
 
 ---
 
-## Phase 15 — AI Chatbot with RAG Toggle (v3.0)
-**Goal:** Build a multi-turn conversational AI assistant with optional RAG-enhanced context.
+## Phase 15 — AI Chatbot with Tavily Web Search (v3.0)
+**Goal:** Build a multi-turn conversational AI assistant with real-time Tavily web search enrichment.
 
 ### Tasks
 - [ ] Implement `chatbot_reply(messages)` in `groq_service.py` with `CHATBOT_SYSTEM` prompt.
-- [ ] Create `/chatbot/` routes: index (GET), send (POST), clear (POST).
+- [ ] Create `/chatbot/` routes: index (GET), send (POST), clear (POST), download-pdf (GET).
 - [ ] Session-based message history (multi-turn).
-- [ ] Add RAG toggle checkbox — when enabled, inject `get_rag_context()` into system prompt.
+- [ ] Auto-enrich all queries with Tavily web search via `_enrich_with_web_search()` pipeline.
 - [ ] Save conversations to `Queries` table (`query_type='chatbot'`).
-- [ ] Create `chatbot/chat.html` with message bubbles, auto-scroll, voice input button.
+- [ ] Create `chatbot/chat.html` with message bubbles, auto-scroll, voice input button, Download PDF button.
 - [ ] Register `chatbot_bp` blueprint.
 
 ### Done Criteria
 - Multi-turn chat works with context retained.
-- RAG toggle enriches responses with knowledge base context.
+- All responses enriched with real-time web data via Tavily API.
+- Conversation exportable as styled PDF.
 
 ---
 
@@ -684,22 +685,23 @@ virtual-career-counselor/
 
 ---
 
-## Phase 25 — RAG Job Matching (v3.0)
-**Goal:** Lightweight TF-IDF knowledge base for career-related Q&A without external vector DB.
+## Phase 25 — Smart Career Search (v3.0)
+**Goal:** Tavily-powered real-time web search + Groq AI pipeline for career-related Q&A.
 
 ### Tasks
-- [ ] Create `rag_service.py` with TF-IDF cosine similarity engine.
-- [ ] Store documents in `rag_store.json` (no external DB dependency).
-- [ ] Implement `add_documents()`, `query_knowledge()`, `get_rag_context()`, `seed_knowledge_base()`.
-- [ ] Include 10 seed documents covering major career domains.
-- [ ] Implement `rag_enhanced_query(user_question, rag_context)` in `groq_service.py`.
-- [ ] Create `/job-match/` routes: match (query), seed (populate KB), add_doc (custom upload).
-- [ ] Create `job_match/match.html` with query form + KB stats + add document form.
+- [ ] Implement `smart_career_search(user_question)` in `groq_service.py` with `SMART_SEARCH_SYSTEM` prompt.
+- [ ] Use Tavily `search_web()` with `search_depth="advanced"` for deep career data retrieval.
+- [ ] Build enriched prompt combining web search results + user question → Groq AI.
+- [ ] Return AI answer + list of source citations (title, URL, snippet).
+- [ ] Create `/job-match/` routes: search (GET/POST), download-pdf (GET).
+- [ ] Store latest result in session for on-the-fly PDF export.
+- [ ] Create `job_match/match.html` with search form, AI result card with Download PDF button, collapsible sources list.
 - [ ] Register `job_match_bp` blueprint.
 
 ### Done Criteria
-- User queries get matched against knowledge base; AI response enriched with RAG context.
-- Admin can seed KB or add custom documents.
+- User queries return AI-enriched answers with real-time web data from Tavily.
+- Source citations displayed with clickable links and snippets.
+- Search results exportable as styled PDF with sources.
 
 ---
 
@@ -762,7 +764,7 @@ virtual-career-counselor/
 - [ ] Test all DynamoDB operations with try/except guards for missing tables.
 - [ ] Verify dark mode toggle, voice input, and Chart.js rendering.
 - [ ] Manually test full user journey: register → login → chatbot → history → PDF → bookmark.
-- [ ] Verify RAG knowledge base seed + query.
+- [ ] Verify Smart Career Search returns Tavily-enriched results.
 - [ ] Test classroom create/join flow.
 - [ ] Validate error handling + user-safe messages on all routes.
 
@@ -772,22 +774,22 @@ virtual-career-counselor/
 
 ---
 
-## Phase 30 — Production Deployment on AWS EC2
-**Goal:** Deploy and validate live MVP.
+## Phase 30 — Production Deployment on Render.com
+**Goal:** Deploy and validate live MVP via Render PaaS with GitHub auto-deploy.
 
 ### Tasks
-- [ ] Launch EC2 (Ubuntu 22.04) and attach IAM app role.
-- [ ] Install Python, pip, nginx, gunicorn, git.
-- [ ] Clone repo and set up virtual environment.
-- [ ] Add production `.env` and verify secrets.
-- [ ] Start app with Gunicorn.
-- [ ] Configure Nginx reverse proxy.
-- [ ] Open ports 80/443 and set security rules.
-- [ ] Add HTTPS (Let’s Encrypt or ACM + ALB).
-- [ ] Restart services and run smoke tests.
+- [ ] Push all local changes to `main` branch on GitHub.
+- [ ] Log in to Render.com via GitHub OAuth.
+- [ ] Create a new Web Service linked to the repository.
+- [ ] Set Build Command: `pip install -r requirements.txt`
+- [ ] Set Start Command: `gunicorn run:app`
+- [ ] Add all environment variables in Render’s Environment tab (see Section 8.3).
+- [ ] Trigger first deploy and monitor build logs.
+- [ ] Verify the live URL and run smoke tests.
 
 ### Done Criteria
-- Public URL works.
+- Render deploy logs show “Live” status.
+- Public `.onrender.com` URL works.
 - Core flows succeed in production.
 
 ---
@@ -890,7 +892,11 @@ virtual-career-counselor/
 
 ## 4.2 IAM Roles and Policies
 
-### Role 1: `ec2-app-role` (attach to EC2 instance)
+### Role/User 1: `render-app-iam-user` (for Render environment variables)
+Since Render is not an EC2 instance, you cannot attach an IAM role directly.
+Instead, create an IAM **user** with programmatic access (Access Key + Secret Key)
+and set `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` in Render's Environment tab.
+
 Allow:
 - `dynamodb:PutItem`
 - `dynamodb:GetItem`
@@ -932,15 +938,14 @@ Resources:
 
 ---
 
-## 4.4 EC2 Setup
+## 4.4 Render.com Setup
 
-1. Launch `Ubuntu 22.04 LTS` EC2 (`t2.micro` MVP or `t2.medium` recommended).
-2. Attach IAM role `ec2-app-role`.
-3. Security Group inbound rules:
-   - 22 (SSH) from your IP
-   - 80 (HTTP) from anywhere
-   - 443 (HTTPS) from anywhere
-4. SSH into instance and install stack.
+1. Push code to GitHub `main` branch.
+2. Log in to [Render.com](https://render.com) with GitHub.
+3. Create **New > Web Service**, connect your repository.
+4. Configure: Runtime **Python 3**, Build Command `pip install -r requirements.txt`, Start Command `gunicorn run:app`.
+5. Add all environment variables in the **Environment** tab (see Section 8.3).
+6. Render handles HTTPS, CDN, and scaling automatically — no security groups needed.
 
 ---
 
@@ -984,13 +989,13 @@ FLASK_ENV=production
   - `generate_trends_report(industry)` — Industry hiring trends
   - `generate_peer_comparison(target_role, skills, experience)` — Peer benchmarking
   - `_multi_turn_chat(conversation)` — Helper for multi-turn AI conversations
-  - `chatbot_reply(messages)` — v3.0 multi-turn chatbot with RAG toggle
+  - `chatbot_reply(messages)` — v3.0 multi-turn chatbot with Tavily web search
   - `generate_cover_letter(resume_text, job_description, company_name)` — v3.0 cover letter
   - `analyze_github_profile(repos_info)` — v3.0 GitHub profile career analysis
   - `analyze_skill_gap(current_skills, target_role, experience)` — v3.0 skill gap with chart data
   - `group_discussion_reply(messages)` — v3.0 mock GD moderator
   - `mentor_reply(messages)` — v3.0 persistent mentor conversation
-  - `rag_enhanced_query(user_question, rag_context)` — v3.0 RAG-enhanced career Q&A
+  - `smart_career_search(user_question)` — v3.0 Tavily-powered career Q&A
   - `generate_weekly_digest(industries)` — v3.0 career digest generator
 - Add timeouts and exception handling.
 - Normalize output format (JSON-like sections or strict bullet blocks).
@@ -1133,7 +1138,7 @@ Provide:
 ```text
 You are a friendly, knowledgeable AI career counselor chatbot.
 Help users with career questions, job search tips, skill development, and professional growth.
-Be conversational but data-driven. If RAG context is provided, use it to enrich your answers.
+Be conversational but data-driven. Use Tavily web search results to provide up-to-date, accurate answers.
 Keep responses concise (2-4 paragraphs) unless the user asks for detail.
 ```
 
@@ -1179,11 +1184,11 @@ Give actionable advice, suggest resources, track progress, and provide encourage
 Be warm but professional. Ask follow-up questions to understand context.
 ```
 
-### Q) RAG-Enhanced System Prompt (v3.0)
+### Q) Smart Search System Prompt (v3.0)
 ```text
-You are an AI career advisor with access to a curated knowledge base.
-Use the provided context to give accurate, specific answers about career paths,
-job markets, and skill requirements. Always indicate when information comes from the knowledge base.
+You are a Career Expert. Use the following real-time search results from Tavily
+to answer the user's career question. If the search results include salary data
+or specific job links, prioritize those in your response.
 ```
 
 ### Prompt Safety Rules
@@ -1210,7 +1215,7 @@ job markets, and skill requirements. Always indicate when information comes from
 13. Real-Time Market Trends Dashboard
 14. Peer Comparison & Benchmarking
 15. Gamification — Badges & Leaderboard
-16. AI Chatbot with RAG toggle (v3.0)
+16. AI Chatbot with Tavily web search (v3.0)
 17. Cover Letter Generator (v3.0)
 18. GitHub Profile Analyzer (v3.0)
 19. Skill Gap Heatmap + Chart.js (v3.0)
@@ -1220,16 +1225,12 @@ job markets, and skill requirements. Always indicate when information comes from
 23. Voice Input (v3.0)
 24. Mock Group Discussion (v3.0)
 25. AI Mentor Chat (v3.0)
-26. RAG Job Matching (v3.0)
+26. Smart Career Search (v3.0)
 27. Weekly Career Digest (v3.0)
 28. Team/Classroom Mode (v3.0)
 29. Navigation overhaul + Dashboard redesign (v3.0)
 30. Testing, QA, and Hardening
-31. EC2 deployment and production checks
-13. Real-Time Market Trends Dashboard
-14. Peer Comparison & Benchmarking
-15. Gamification — Badges & Leaderboard
-16. AI Chatbot with RAG toggle (v3.0)
+31. Render.com deployment and production checks
 
 (Items 17-31 listed in section above)
 
@@ -1261,7 +1262,7 @@ job markets, and skill requirements. Always indicate when information comes from
 - [ ] Badges auto-award correctly; leaderboard displays top 20.
 
 ## 7.2c AI Features (16 Advanced v3.0 Features)
-- [ ] AI Chatbot: multi-turn conversation works; RAG toggle enriches context.
+- [ ] AI Chatbot: multi-turn conversation works; Tavily web search enriches context.
 - [ ] Cover Letter: generates tailored cover letter from resume + JD + company.
 - [ ] GitHub Analyzer: fetches repos, returns AI career analysis.
 - [ ] Skill Gap Heatmap: Chart.js bar chart renders; readiness score color-coded.
@@ -1272,7 +1273,7 @@ job markets, and skill requirements. Always indicate when information comes from
 - [ ] Voice Input: microphone button transcribes speech to text field.
 - [ ] Mock GD: 5+ round discussion with AI; evaluation at the end.
 - [ ] AI Mentor: goals set once; persistent multi-turn mentorship.
-- [ ] RAG Job Match: knowledge base query returns enriched answers; seed + add docs work.
+- [ ] Smart Career Search: Tavily web search returns AI-enriched answers with source citations.
 - [ ] Weekly Digest: select industries; generate on-demand digest.
 - [ ] Classroom: create room with code; join by code; member activity visible.
 
@@ -1287,7 +1288,7 @@ job markets, and skill requirements. Always indicate when information comes from
 - [ ] Mentor chat saved to `MentorChats` table (v3.0); persists across sessions.
 - [ ] Classrooms saved to `Classrooms` table (v3.0); join codes unique.
 - [ ] Digest preferences saved to `DigestPreferences` table (v3.0).
-- [ ] RAG knowledge base stored in `rag_store.json` (v3.0); seed + add docs persist.
+- [ ] Smart Career Search uses Tavily API (no local storage needed) (v3.0).
 
 ## 7.4 Notifications
 - [ ] SNS welcome email received after registration.
@@ -1313,7 +1314,7 @@ job markets, and skill requirements. Always indicate when information comes from
 - [ ] Interview prep → 5 questions → evaluation works.
 - [ ] Career pivot, trends, peer comparison all return results.
 - [ ] Gamification page shows badges and leaderboard.
-- [ ] AI Chatbot multi-turn conversation with RAG toggle works (v3.0).
+- [ ] AI Chatbot multi-turn conversation with Tavily web search works (v3.0).
 - [ ] Cover letter generates from resume + JD (v3.0).
 - [ ] GitHub analysis fetches repos and returns results (v3.0).
 - [ ] Skill gap heatmap renders Chart.js chart (v3.0).
@@ -1323,75 +1324,85 @@ job markets, and skill requirements. Always indicate when information comes from
 - [ ] Voice input microphone captures speech (v3.0).
 - [ ] Group discussion runs 5+ rounds with evaluation (v3.0).
 - [ ] AI Mentor chat persists goals and conversation (v3.0).
-- [ ] RAG job match returns enriched results (v3.0).
+- [ ] Smart Career Search returns Tavily-enriched results with sources (v3.0).
 - [ ] Weekly digest generates for selected industries (v3.0).
 - [ ] Classroom create, join, view member activity works (v3.0).
 - [ ] Navbar mega dropdowns work on mobile and desktop.
-- [ ] Nginx + Gunicorn services restart cleanly.
+- [ ] Render deploy logs show "Live" status.
 
 ---
 
-## 8) EC2 Deployment Steps (Gunicorn + Nginx + Go Live)
+## 8) Render Deployment Steps (PaaS + Auto-Deploy)
 
-## 8.1 Server Provisioning
-```bash
-sudo apt update && sudo apt upgrade -y
-sudo apt install -y python3 python3-pip python3-venv nginx git
+## 8.1 GitHub Integration
+
+Ensure all local changes are pushed to the `main` branch:
+```powershell
+git add .
+git commit -m "Prepare for Render deployment"
+git push origin main
 ```
 
-## 8.2 App Setup
-```bash
-git clone <your-repo-url> virtual-career-counselor
-cd virtual-career-counselor
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+## 8.2 Render Web Service Setup
 
-## 8.3 Environment Variables
-Create `.env` with production values:
-- `SECRET_KEY`
-- `GROQ_API_KEY`
-- `AWS_REGION`
-- `SNS_TOPIC_ARN`
-- DynamoDB table names
+1. Log in to [Render.com](https://render.com) via GitHub.
+2. Click **New +** > **Web Service**.
+3. Connect the `virtual-career-counselor` repository.
+4. Configure the following:
 
-## 8.4 Run with Gunicorn (quick test)
-```bash
-gunicorn --bind 0.0.0.0:5000 run:app
-```
+| Setting | Value |
+|---------|-------|
+| **Name** | `virtual-career-counselor` |
+| **Region** | Choose closest (e.g., Singapore or US East) |
+| **Branch** | `main` |
+| **Runtime** | Python 3 |
+| **Build Command** | `pip install -r requirements.txt` |
+| **Start Command** | `gunicorn run:app` |
 
-## 8.5 Systemd Service for Gunicorn
-Create `/etc/systemd/system/vcc.service` and configure working directory, venv path, and exec command. Then:
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable vcc
-sudo systemctl start vcc
-sudo systemctl status vcc
-```
+## 8.3 Environment Variables (The ".env" Migration)
 
-## 8.6 Nginx Reverse Proxy
-Create Nginx site config:
-- Listen on port 80
-- Proxy pass to `http://127.0.0.1:5000`
-- Forward headers (`Host`, `X-Forwarded-For`, `X-Forwarded-Proto`)
+**Do NOT upload a `.env` file.** Instead, go to the **Environment** tab in your Render service dashboard and manually add each variable:
 
-Enable and reload:
-```bash
-sudo ln -s /etc/nginx/sites-available/vcc /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl restart nginx
-```
+| Variable | Value / Notes |
+|----------|---------------|
+| `SECRET_KEY` | Any long, random string you make up (e.g., `adit_super_secret_vcc_2026_xyz`). You don't need to "find" this anywhere - just create a strong random string so Flask can secure sessions and cookies. |
+| `GROQ_API_KEY` | Your Groq API key from [console.groq.com](https://console.groq.com) |
+| `AWS_ACCESS_KEY_ID` | From the IAM user you created for AWS access |
+| `AWS_SECRET_ACCESS_KEY` | From the same IAM user |
+| `AWS_REGION` | e.g., `ap-south-1` |
+| `SNS_TOPIC_ARN` | Your SNS topic ARN from the AWS Console |
+| `DYNAMODB_USERS_TABLE` | `Users` |
+| `DYNAMODB_QUERIES_TABLE` | `Queries` |
+| `DYNAMODB_ADMINLOGS_TABLE` | `AdminLogs` |
+| `DYNAMODB_CONVERSATIONS_TABLE` | `Conversations` |
+| `DYNAMODB_PROGRESS_TABLE` | `UserProgress` |
+| `DYNAMODB_BADGES_TABLE` | `UserBadges` |
+| `DYNAMODB_BOOKMARKS_TABLE` | `Bookmarks` |
+| `DYNAMODB_MENTOR_TABLE` | `MentorChats` |
+| `DYNAMODB_CLASSROOMS_TABLE` | `Classrooms` |
+| `DYNAMODB_DIGEST_TABLE` | `DigestPreferences` |
 
-## 8.7 HTTPS (Recommended)
-Use Let’s Encrypt (Certbot) or ACM + ALB setup.
+> **Tip:** `SECRET_KEY` is NOT a password you look up - it's a random string you invent yourself. Something like `my_super_secret_flask_key_2026` works fine. Its only job is to let Flask encrypt session cookies securely.
 
-## 8.8 Go-Live Validation
-- [ ] Open public IP/domain and verify app loads.
-- [ ] Complete full happy-path flow.
-- [ ] Check logs for errors:
-  - `journalctl -u vcc -f`
-  - `sudo tail -f /var/log/nginx/error.log`
+## 8.4 Networking & HTTPS
+
+Render automatically provides:
+- **Global CDN** for fast content delivery
+- **Managed TLS/SSL** (HTTPS) on all `.onrender.com` domains
+- **No Nginx, no Certbot, no security groups** - it's all handled for you
+
+## 8.5 Go-Live Validation
+
+- [ ] Monitor the **Deploy Logs** in the Render dashboard for build/start errors.
+- [ ] Once status shows **"Live"**, click the unique URL provided by Render (e.g., `https://virtual-career-counselor.onrender.com`).
+- [ ] Verify these work:
+  - Registration and login
+  - At least one AI feature (e.g., Career Path Explorer)
+  - Dashboard loads with all 22 feature cards
+- [ ] Check ongoing logs via the **Logs** tab on the Render sidebar.
+
+> **Auto-Deploy:** Every future `git push origin main` will automatically trigger a new deployment on Render - no manual steps needed.
+
 
 ---
 
@@ -1421,7 +1432,7 @@ Use Let’s Encrypt (Certbot) or ACM + ALB setup.
 - [x] Dashboard redesigned with all 11 feature cards
 
 ### 16 Advanced Features (v3.0)
-- [x] AI Chatbot with RAG toggle (multi-turn, session-based)
+- [x] AI Chatbot with Tavily web search (multi-turn, session-based)
 - [x] Cover Letter Generator (resume + JD + company → tailored letter)
 - [x] GitHub Profile Analyzer (GitHub API → AI career analysis)
 - [x] Skill Gap Heatmap (Chart.js 4.4 bar chart + readiness score)
@@ -1432,19 +1443,19 @@ Use Let’s Encrypt (Certbot) or ACM + ALB setup.
 - [x] Voice Input (Web Speech API on chatbot, mentor, GD)
 - [x] Mock Group Discussion (5+ round AI-moderated with evaluation)
 - [x] AI Mentor Chat (persistent goal-based mentorship via DynamoDB)
-- [x] RAG Job Matching (lightweight TF-IDF engine, rag_store.json)
+- [x] Smart Career Search (Tavily AI web search + Groq pipeline)
 - [x] Weekly Career Digest (15 industries, on-demand generation)
 - [x] Team/Classroom Mode (create/join by code, member activity)
 - [x] Navigation overhaul (2 mega dropdowns, dark mode toggle)
 - [x] Dashboard redesigned with 22 feature cards in 5 sections
 - [x] 4 New DynamoDB tables (`Bookmarks`, `MentorChats`, `Classrooms`, `DigestPreferences`)
-- [x] 2 New services (`rag_service.py`, `pdf_service.py`)
+- [x] 1 New service (`pdf_service.py`)
 - [x] 8 New Groq AI functions + 7 system prompts
 - [x] 10 New blueprints (23 total), 53 routes confirmed
 
 ### Final Steps
 - [ ] Tests + QA complete
-- [ ] EC2 deployed with Nginx + Gunicorn
+- [ ] Render.com deployed with Gunicorn + auto-deploy from GitHub
 - [ ] Live smoke tests passed
 
 ---
@@ -1464,7 +1475,7 @@ Use Let’s Encrypt (Certbot) or ACM + ALB setup.
 | 9 | Market Trends | `/trends/` | `trends_bp` | `dashboard.html` | `generate_trends_report()` | v2.0 |
 | 10 | Peer Comparison | `/peers/` | `peers_bp` | `comparison.html` | `generate_peer_comparison()` | v2.0 |
 | 11 | Badges & Leaderboard | `/gamification/` | `gamification_bp` | `badges.html` | Auto-award rules | v2.0 |
-| 12 | AI Chatbot | `/chatbot/` | `chatbot_bp` | `chat.html` | `chatbot_reply()` | v3.0 |
+| 12 | AI Chatbot | `/chatbot/`, `/chatbot/download-pdf` | `chatbot_bp` | `chat.html` | `chatbot_reply()` | v3.0 |
 | 13 | Cover Letter Generator | `/cover-letter/` | `cover_letter_bp` | `generate.html` | `generate_cover_letter()` | v3.0 |
 | 14 | GitHub Analyzer | `/github/` | `github_bp` | `analyze.html` | `analyze_github_profile()` | v3.0 |
 | 15 | Skill Gap Heatmap | `/skill-gap/` | `skill_gap_bp` | `analyze.html` | `analyze_skill_gap()` | v3.0 |
@@ -1473,7 +1484,7 @@ Use Let’s Encrypt (Certbot) or ACM + ALB setup.
 | 18 | Bookmarks | `/history/bookmarks` | `history_bp` | `bookmarks.html` | — | v3.0 |
 | 19 | Mock Group Discussion | `/gd/` | `gd_bp` | `start.html`, `discuss.html` | `group_discussion_reply()` | v3.0 |
 | 20 | AI Mentor Chat | `/mentor/` | `mentor_bp` | `chat.html` | `mentor_reply()` | v3.0 |
-| 21 | RAG Job Matching | `/job-match/` | `job_match_bp` | `match.html` | `rag_enhanced_query()` | v3.0 |
+| 21 | Smart Career Search | `/job-match/`, `/job-match/download-pdf` | `job_match_bp` | `match.html` | `smart_career_search()` | v3.0 |
 | 22 | Weekly Digest | `/digest/` | `digest_bp` | `preferences.html`, `result.html` | `generate_weekly_digest()` | v3.0 |
 | 23 | Team/Classroom | `/classroom/` | `classroom_bp` | `index.html`, `view.html` | — | v3.0 |
 | 24 | Dark Mode | — | — | `base.html` + `app.js` | — | v3.0 |
@@ -1481,7 +1492,7 @@ Use Let’s Encrypt (Certbot) or ACM + ALB setup.
 | 26 | Admin Dashboard | `/admin/` | `admin_bp` | `dashboard.html` | — | v1.0 |
 | 27 | Auth System | `/auth/` | `auth_bp` | `login.html`, `register.html` | — | v1.0 |
 
-**Total: 23 Blueprints | 53 Routes | 10 DynamoDB Tables | 20+ AI-Powered Functions | 27 Features**
+**Total: 23 Blueprints | 55 Routes | 10 DynamoDB Tables | 20+ AI-Powered Functions | 27 Features**
 
 ### Technology Stack (v3.0)
 
@@ -1492,8 +1503,8 @@ Use Let’s Encrypt (Certbot) or ACM + ALB setup.
 | Database | AWS DynamoDB (On-Demand) | — |
 | Notifications | AWS SNS | — |
 | PDF Generation | xhtml2pdf | 0.2.x |
-| RAG Engine | Custom TF-IDF (cosine similarity) | — |
-| Resume Parsing | PyPDF2 + python-docx | — |
+| Web Search | Tavily AI (real-time search) | Latest |
+| Resume Parsing | pypdf + python-docx | — |
 | HTTP Client | requests | 2.32.x |
 | Password Hashing | bcrypt | 4.x |
 | Frontend CSS | Bootstrap | 5.3.3 |
@@ -1501,7 +1512,7 @@ Use Let’s Encrypt (Certbot) or ACM + ALB setup.
 | Charts | Chart.js | 4.4.0 |
 | Voice Input | Web Speech API | Browser native |
 | Dark Mode | CSS + localStorage | — |
-| Deployment | Gunicorn + Nginx on EC2 | — |
+| Deployment | Gunicorn on Render.com (PaaS) | — |
 
 ---
 

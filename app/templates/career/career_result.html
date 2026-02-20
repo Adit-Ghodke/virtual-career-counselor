@@ -27,7 +27,7 @@
                 <span><i class="bi bi-stars me-1"></i>AI Career Overview: <strong>{{ career_name }}</strong></span>
             </div>
             <div class="card-body ai-response">
-                {{ result | safe }}
+                {{ result | md | safe }}
             </div>
             <div class="card-footer text-end">
                 <form method="POST" action="{{ url_for('career.email_report') }}" class="d-inline">

@@ -6,9 +6,14 @@
         <div class="card shadow border-0">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0"><i class="bi bi-chat-dots me-2"></i>AI Career Chatbot</h5>
-                <form method="POST" action="{{ url_for('chatbot.clear') }}" class="d-inline">
-                    <button class="btn btn-sm btn-outline-light"><i class="bi bi-arrow-clockwise me-1"></i>New Chat</button>
-                </form>
+                <div>
+                    <a href="{{ url_for('chatbot.download_pdf') }}" class="btn btn-sm btn-light me-2">
+                        <i class="bi bi-file-earmark-pdf me-1"></i>Download PDF
+                    </a>
+                    <form method="POST" action="{{ url_for('chatbot.clear') }}" class="d-inline">
+                        <button class="btn btn-sm btn-outline-light"><i class="bi bi-arrow-clockwise me-1"></i>New Chat</button>
+                    </form>
+                </div>
             </div>
             <div class="card-body p-0">
                 <!-- Chat Messages -->
@@ -19,7 +24,7 @@
                         <div class="d-flex mb-3">
                             <div class="me-2"><span class="badge bg-primary rounded-circle p-2"><i class="bi bi-robot"></i></span></div>
                             <div class="bg-white rounded-3 p-3 shadow-sm" style="max-width: 80%;">
-                                <div class="ai-response">{{ msg.content }}</div>
+                                <div class="ai-response">{{ msg.content | md | safe }}</div>
                             </div>
                         </div>
                         {% elif msg.role == 'user' %}
@@ -37,10 +42,6 @@
                 <div class="p-3 border-top bg-white">
                     <form method="POST" action="{{ url_for('chatbot.send') }}">
                         <div class="input-group">
-                            <div class="input-group-text bg-light">
-                                <input type="checkbox" name="use_rag" class="form-check-input me-1" title="Enable enhanced search">
-                                <small class="text-muted">Smart Search</small>
-                            </div>
                             <input type="text" name="message" class="form-control form-control-lg" placeholder="Ask me anything about careers..." autofocus required id="voiceInput">
                             <button type="button" class="btn btn-outline-secondary" onclick="startVoiceInput('voiceInput')" title="Voice input">
                                 <i class="bi bi-mic"></i>
@@ -49,7 +50,7 @@
                                 <i class="bi bi-send me-1"></i>Send
                             </button>
                         </div>
-                        <small class="text-muted mt-1 d-block">Tip: Enable Smart Search for data-backed answers from our knowledge base.</small>
+                        <small class="text-muted mt-1 d-block">Powered by Tavily AI web search for real-time, data-backed answers.</small>
                     </form>
                 </div>
             </div>

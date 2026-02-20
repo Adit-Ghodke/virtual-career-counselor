@@ -39,7 +39,7 @@
                 {% endif %}
             </div>
             <div class="card-body ai-response">
-                {{ result | safe }}
+                {{ result | md | safe }}
             </div>
         </div>
 

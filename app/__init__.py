@@ -3,6 +3,7 @@ from typing import Any, Tuple, Union
 from flask import Flask
 from werkzeug.wrappers import Response
 from flask_session import Session  # type: ignore[import-untyped]
+import markdown as _md  # type: ignore[import-untyped]
 from config import DevelopmentConfig, ProductionConfig
 
 
@@ -19,6 +20,15 @@ def create_app() -> Flask:
 
     # Initialize server-side session
     Session(app)
+
+    # ── Register custom Jinja2 filters ───────────────────────────
+    def md_filter(text: str) -> str:
+        """Convert Markdown text to HTML with table support."""
+        if not text:
+            return ""
+        return _md.markdown(text, extensions=["tables", "fenced_code", "nl2br"])
+
+    app.jinja_env.filters["md"] = md_filter  # pyright: ignore[reportUnknownMemberType]
 
     # ── Register Blueprints ──────────────────────────────────────
     from app.auth.routes import auth_bp

@@ -30,7 +30,7 @@
                     <span class="text-muted">{{ query.created_at | default('N/A') }}</span>
                 </div>
                 <hr>
-                <div class="ai-response">{{ query.ai_response | default('No response') }}</div>
+                <div class="ai-response">{{ query.ai_response | default('No response') | md | safe }}</div>
             </div>
         </div>
     </div>

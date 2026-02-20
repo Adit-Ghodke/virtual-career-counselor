@@ -1,14 +1,15 @@
 """
-RAG-Powered Job Matching — uses ChromaDB knowledge base for grounded AI answers.
+Smart Career Search — Tavily AI web search + Groq analysis for real-time career intelligence.
 """
-from typing import Optional, Union
-from flask import Blueprint, request, render_template, session, flash, redirect, url_for
+from typing import Dict, List, Optional, Union
+from flask import Blueprint, request, render_template, session, flash, make_response, redirect, url_for
 from werkzeug.wrappers import Response
+import markdown as md  # type: ignore[import-untyped]
 
 from app.auth.utils import login_required
-from app.services.groq_service import rag_enhanced_query
-from app.services.rag_service import get_rag_context, get_doc_count, seed_knowledge_base, list_documents, add_documents
+from app.services.groq_service import smart_career_search
 from app.services.dynamo_service import save_query
+from app.services.pdf_service import generate_pdf
 
 job_match_bp = Blueprint("job_match", __name__, url_prefix="/job-match", template_folder="../templates")
 
@@ -16,69 +17,75 @@ job_match_bp = Blueprint("job_match", __name__, url_prefix="/job-match", templat
 @job_match_bp.route("/", methods=["GET", "POST"])
 @login_required
 def match() -> Union[str, Response]:
-    """RAG-powered career query answering."""
+    """Tavily-powered career search with Groq AI synthesis."""
     result: Optional[str] = None
-    doc_count: int = 0
-
-    try:
-        doc_count = get_doc_count()
-    except Exception:
-        pass
+    sources: List[Dict[str, str]] = []
 
     if request.method == "POST":
         question = request.form.get("question", "").strip()
         if not question:
             flash("Please enter a question.", "warning")
-            return render_template("job_match/match.html", result=None, doc_count=doc_count)
+            return render_template("job_match/match.html", result=None, sources=[])
 
         try:
-            rag_ctx = get_rag_context(question, n_results=5)
-            result = rag_enhanced_query(question, rag_ctx)
+            result, sources = smart_career_search(question)
+
+            # Store latest result in session for PDF download
+            session["job_match_last"] = {
+                "question": question,
+                "result": result or "",
+                "sources": sources,
+            }
 
             save_query(
                 user_id=session["user_id"],
-                query_type="rag_job_match",
+                query_type="smart_career_search",
                 input_text=question,
-                ai_response=result,
+                ai_response=result or "",
             )
         except Exception as exc:
             flash(f"Error: {exc}", "danger")
 
-    return render_template("job_match/match.html", result=result, doc_count=doc_count)
+    return render_template("job_match/match.html", result=result, sources=sources)
 
 
-@job_match_bp.route("/seed", methods=["POST"])
+@job_match_bp.route("/download-pdf")
 @login_required
-def seed() -> Response:
-    """Seed the RAG knowledge base with built-in career data."""
-    try:
-        count = seed_knowledge_base()
-        flash(f"Knowledge base seeded with {count} documents!", "success")
-    except Exception as exc:
-        flash(f"Error seeding: {exc}", "danger")
-    return redirect(url_for("job_match.match"))
-
-
-@job_match_bp.route("/add-doc", methods=["POST"])
-@login_required
-def add_doc() -> Response:
-    """Add a custom document to the knowledge base."""
-    title: str = request.form.get("doc_title", "").strip()
-    content: str = request.form.get("doc_content", "").strip()
-    category: str = request.form.get("doc_category", "custom") or "custom"
-
-    if not title or not content:
-        flash("Title and content are required.", "warning")
+def download_pdf() -> Union[Response, tuple[str, int]]:
+    """Export the latest Smart Career Search result as a styled PDF."""
+    last: Optional[Dict[str, object]] = session.get("job_match_last")
+    if not last or not last.get("result"):
+        flash("No search result to export. Run a search first.", "warning")
         return redirect(url_for("job_match.match"))
 
-    try:
-        add_documents([{
-            "id": title.lower().replace(" ", "_"),
-            "content": content,
-            "metadata": {"source": "user_upload", "category": category, "title": title},
-        }])
-        flash(f"Document '{title}' added to knowledge base!", "success")
-    except Exception as exc:
-        flash(f"Error: {exc}", "danger")
+    result_str: str = str(last["result"])
+    question_str: str = str(last.get("question", ""))
+    sources_list: List[Dict[str, str]] = last.get("sources", [])  # type: ignore[assignment]
 
-    return redirect(url_for("job_match.match"))
+    # Build HTML
+    html_parts: List[str] = [f"<p><strong>Question:</strong> {question_str}</p><hr>"]
+    html_parts.append(md.markdown(result_str, extensions=["tables", "fenced_code"]))
+
+    if sources_list:
+        html_parts.append("<h2>Web Sources</h2><ul>")
+        for src in sources_list:
+            title = src.get("title", "Link")
+            url = src.get("url", "#")
+            snippet = src.get("snippet", "")
+            html_parts.append(f'<li><strong>{title}</strong><br><small>{snippet[:200]}</small><br>'
+                              f'<a href="{url}">{url}</a></li>')
+        html_parts.append("</ul>")
+
+    try:
+        pdf_bytes: bytes = generate_pdf(
+            title="Smart Career Search — AI Report",
+            html_content="\n".join(html_parts),
+            user_name=session.get("username", "User"),
+        )
+        response: Response = make_response(pdf_bytes)
+        response.headers["Content-Type"] = "application/pdf"
+        response.headers["Content-Disposition"] = "attachment; filename=Smart_Career_Search.pdf"
+        return response
+    except Exception as exc:
+        flash(f"PDF generation failed: {exc}", "danger")
+        return redirect(url_for("job_match.match"))

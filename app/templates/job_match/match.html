@@ -3,66 +3,57 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-10">
-        <h3 class="fw-bold mb-2"><i class="bi bi-database-fill-gear me-2 text-success"></i>AI-Powered Career Intelligence</h3>
-        <p class="text-muted mb-4">Ask career questions powered by our curated knowledge base. Answers are grounded in real data.</p>
+        <h3 class="fw-bold mb-2"><i class="bi bi-search me-2 text-success"></i>Smart Career Search</h3>
+        <p class="text-muted mb-4">Ask any career question — powered by real-time web search (Tavily AI) and Groq AI analysis.</p>
 
-        <div class="row g-4">
-            <div class="col-lg-8">
-                <form method="POST" class="mb-4">
-                    <div class="input-group input-group-lg">
-                        <input type="text" name="question" class="form-control" placeholder="e.g. What are the hottest tech skills in 2026?" required>
-                        <button type="submit" class="btn btn-success" id="searchBtn">
-                            <i class="bi bi-search me-1"></i>Ask
-                        </button>
-                    </div>
-                    <small class="text-muted">Your question will be matched against {{ doc_count }} knowledge documents.</small>
-                </form>
-
-                {% if result %}
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-success text-white">
-                        <i class="bi bi-lightbulb me-2"></i>AI-Enhanced Answer
-                    </div>
-                    <div class="card-body">
-                        <div class="ai-response">{{ result }}</div>
-                    </div>
-                </div>
-                {% endif %}
+        <form method="POST" class="mb-4">
+            <div class="input-group input-group-lg">
+                <input type="text" name="question" class="form-control" placeholder="e.g. What are the hottest tech skills in 2026?" required id="voiceInput">
+                <button type="button" class="btn btn-outline-secondary" onclick="startVoiceInput('voiceInput')" title="Voice input">
+                    <i class="bi bi-mic"></i>
+                </button>
+                <button type="submit" class="btn btn-success" id="searchBtn">
+                    <i class="bi bi-search me-1"></i>Search &amp; Analyze
+                </button>
             </div>
+            <small class="text-muted mt-1 d-block"><i class="bi bi-globe me-1"></i>Searches the live web for the latest career data, then synthesizes an AI-powered answer.</small>
+        </form>
 
-            <div class="col-lg-4">
-                <!-- Knowledge Base Stats -->
-                <div class="card shadow-sm border-0 mb-3">
-                    <div class="card-header bg-light"><h6 class="mb-0"><i class="bi bi-database me-2"></i>Knowledge Base</h6></div>
-                    <div class="card-body text-center">
-                        <div class="display-5 fw-bold text-success">{{ doc_count }}</div>
-                        <p class="text-muted">Documents indexed</p>
-                        <form method="POST" action="{{ url_for('job_match.seed') }}">
-                            <button class="btn btn-sm btn-outline-success w-100 mb-2"><i class="bi bi-cloud-download me-1"></i>Seed Default Data</button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Add Custom Doc -->
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-light"><h6 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Add Document</h6></div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ url_for('job_match.add_doc') }}">
-                            <input type="text" name="doc_title" class="form-control form-control-sm mb-2" placeholder="Document title" required>
-                            <select name="doc_category" class="form-select form-select-sm mb-2">
-                                <option value="salary">Salary Data</option>
-                                <option value="skills">Skills & Tech</option>
-                                <option value="industry">Industry Trends</option>
-                                <option value="interview">Interview Tips</option>
-                                <option value="custom">Custom</option>
-                            </select>
-                            <textarea name="doc_content" class="form-control form-control-sm mb-2" rows="3" placeholder="Paste content..." required></textarea>
-                            <button class="btn btn-sm btn-success w-100"><i class="bi bi-plus me-1"></i>Add</button>
-                        </form>
-                    </div>
-                </div>
+        {% if result %}
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-lightbulb me-2"></i>AI-Powered Answer (with live web data)</span>
+                <a href="{{ url_for('job_match.download_pdf') }}" class="btn btn-sm btn-light">
+                    <i class="bi bi-file-earmark-pdf me-1"></i>Download PDF
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="ai-response">{{ result | md | safe }}</div>
             </div>
         </div>
+
+        {% if sources %}
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-light">
+                <h6 class="mb-0"><i class="bi bi-link-45deg me-2"></i>Web Sources</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    {% for src in sources %}
+                    <li class="mb-2">
+                        <a href="{{ src.url }}" target="_blank" rel="noopener" class="text-decoration-none">
+                            <i class="bi bi-box-arrow-up-right me-1 text-muted"></i>{{ src.title }}
+                        </a>
+                        {% if src.snippet %}
+                        <br><small class="text-muted">{{ src.snippet[:150] }}...</small>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

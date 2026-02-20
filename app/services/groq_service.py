@@ -492,13 +492,11 @@ MENTOR_SYSTEM = (
     "Format responses in markdown."
 )
 
-RAG_ENHANCED_SYSTEM = (
-    "You are an expert career counselor with access to the latest industry data. "
-    "Use the CONTEXT provided below to ground your responses in real data and statistics. "
-    "Always cite which source you're referencing. If the context doesn't cover something, "
-    "use your general knowledge but note it's not from the provided data.\n\n"
-    "CONTEXT:\n{context}\n\n"
-    "Answer the user's question based on the above context and your expertise."
+SMART_SEARCH_SYSTEM = (
+    "You are a Career Expert. Use the following real-time search results from Tavily "
+    "to answer the user's career question. If the search results include salary data "
+    "or specific job links, prioritize those in your response.\n\n"
+    "Format your response in clear markdown with headings, bullet points, and bold key facts."
 )
 
 
@@ -549,10 +547,36 @@ def mentor_reply(messages: List[Dict[str, str]]) -> str:
     return _multi_turn_chat(messages)
 
 
-def rag_enhanced_query(user_question: str, rag_context: str) -> str:
-    """Answer a question using RAG-injected context."""
-    system = RAG_ENHANCED_SYSTEM.replace("{context}", rag_context)
-    return _chat(system, user_question)
+def smart_career_search(user_question: str) -> Tuple[str, List[Dict[str, str]]]:
+    """Search the web via Tavily and synthesize an AI answer with Groq.
+
+    Returns:
+        Tuple of (ai_response, sources_list).
+    """
+    from app.services.web_search_service import search_web, format_sources_markdown
+
+    # Step 1: Tavily web search
+    result: Dict[str, Any] = search_web(user_question, max_results=5, search_depth="advanced")
+    sources: List[Dict[str, str]] = result.get("sources", [])
+
+    # Step 2: Build prompt with web context
+    if result["success"] and result["context"]:
+        enriched_prompt = (
+            f"[WEB SEARCH RESULTS]\n{result['context']}\n[END WEB SEARCH RESULTS]\n\n"
+            f"User Question: {user_question}"
+        )
+    else:
+        enriched_prompt = user_question
+
+    # Step 3: Groq AI synthesis (skip auto web search since we already searched)
+    response: str = _chat(SMART_SEARCH_SYSTEM, enriched_prompt, web_search=False)
+
+    # Append source citations
+    sources_md: str = format_sources_markdown(sources)
+    if sources_md:
+        response += sources_md
+
+    return response, sources
 
 
 def generate_weekly_digest(industries: List[str]) -> str:

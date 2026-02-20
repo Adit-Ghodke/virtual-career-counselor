@@ -39,7 +39,7 @@
                 <i class="bi bi-stars me-1"></i>Market Trends: {{ selected }}
             </div>
             <div class="card-body ai-response">
-                {{ result | safe }}
+                {{ result | md | safe }}
             </div>
         </div>
         {% endif %}

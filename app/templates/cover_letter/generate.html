@@ -35,7 +35,7 @@
                 <button class="btn btn-sm btn-outline-light" onclick="copyToClipboard()"><i class="bi bi-clipboard me-1"></i>Copy</button>
             </div>
             <div class="card-body">
-                <div class="ai-response" id="coverLetterContent">{{ result }}</div>
+                <div class="ai-response" id="coverLetterContent">{{ result | md | safe }}</div>
             </div>
         </div>
         {% endif %}

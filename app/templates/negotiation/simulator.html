@@ -59,7 +59,7 @@
                     {% else %}
                     <small class="text-dark fw-semibold"><i class="bi bi-robot me-1"></i>HR Manager</small>
                     {% endif %}
-                    <div class="mt-1 ai-response">{{ msg.content | safe }}</div>
+                    <div class="mt-1 ai-response">{{ msg.content | md | safe }}</div>
                 </div>
                 {% endif %}
                 {% endfor %}

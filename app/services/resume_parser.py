@@ -7,7 +7,7 @@ from typing import Any, List, Optional
 
 def extract_text_from_pdf(file_storage: Any) -> str:
     """Extract text from an uploaded PDF file."""
-    from PyPDF2 import PdfReader
+    from pypdf import PdfReader
     reader: Any = PdfReader(io.BytesIO(file_storage.read()))
     text_parts: List[str] = []
     for page in reader.pages:

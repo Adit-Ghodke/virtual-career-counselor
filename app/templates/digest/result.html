@@ -14,7 +14,7 @@
                     <small class="text-muted">Industries: {{ industries | join(', ') }}</small>
                 </div>
                 <hr>
-                <div class="ai-response">{{ result }}</div>
+                <div class="ai-response">{{ result | md | safe }}</div>
             </div>
         </div>
     </div>
