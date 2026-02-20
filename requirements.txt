@@ -5,9 +5,10 @@ boto3>=1.35.0
 bcrypt>=4.2.0
 python-dotenv>=1.0.1
 gunicorn>=22.0.0
-xhtml2pdf==0.2.11
 requests>=2.32.0
 markdown>=3.7
 tavily-python>=0.5.0
 PyPDF2>=3.0.0
 python-docx>=1.1.0
+python-bidi==0.4.2
+xhtml2pdf==0.2.11
