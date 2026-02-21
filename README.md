@@ -155,6 +155,7 @@ Copy `.env.example` to `.env` and fill in your values:
 |----------|----------|-------------|
 | `SECRET_KEY` | Yes | Flask session encryption key |
 | `FLASK_ENV` | No | `development` (default) or `production` |
+| `PORT` | No | Server port (default: `10000`; Render injects automatically) |
 | `GROQ_API_KEY` | Yes | Groq API key for AI features |
 | `GROQ_MODEL` | No | Model name (default: `llama-3.3-70b-versatile`) |
 | `AWS_ACCESS_KEY_ID` | Yes | AWS IAM access key |
@@ -182,7 +183,7 @@ Copy `.env.example` to `.env` and fill in your values:
 The app is deployed on [Render.com](https://render.com) with GitHub auto-deploy:
 
 - **Build Command:** `pip install -r requirements.txt`
-- **Start Command:** `gunicorn run:app`
+- **Start Command:** `gunicorn run:app --bind 0.0.0.0:$PORT`
 - **Environment:** Python 3
 - **Branch:** `main` (auto-deploys on push)
 - Manage secrets via Render's **Environment Variables** dashboard

@@ -782,7 +782,7 @@ virtual-career-counselor/
 - [ ] Log in to Render.com via GitHub OAuth.
 - [ ] Create a new Web Service linked to the repository.
 - [ ] Set Build Command: `pip install -r requirements.txt`
-- [ ] Set Start Command: `gunicorn run:app`
+- [ ] Set Start Command: `gunicorn run:app --bind 0.0.0.0:$PORT`
 - [ ] Add all environment variables in Render’s Environment tab (see Section 8.3).
 - [ ] Trigger first deploy and monitor build logs.
 - [ ] Verify the live URL and run smoke tests.
@@ -943,7 +943,7 @@ Resources:
 1. Push code to GitHub `main` branch.
 2. Log in to [Render.com](https://render.com) with GitHub.
 3. Create **New > Web Service**, connect your repository.
-4. Configure: Runtime **Python 3**, Build Command `pip install -r requirements.txt`, Start Command `gunicorn run:app`.
+4. Configure: Runtime **Python 3**, Build Command `pip install -r requirements.txt`, Start Command `gunicorn run:app --bind 0.0.0.0:$PORT`.
 5. Add all environment variables in the **Environment** tab (see Section 8.3).
 6. Render handles HTTPS, CDN, and scaling automatically — no security groups needed.
 
@@ -1357,7 +1357,7 @@ git push origin main
 | **Branch** | `main` |
 | **Runtime** | Python 3 |
 | **Build Command** | `pip install -r requirements.txt` |
-| **Start Command** | `gunicorn run:app` |
+| **Start Command** | `gunicorn run:app --bind 0.0.0.0:$PORT` |
 
 ## 8.3 Environment Variables (The ".env" Migration)
 
