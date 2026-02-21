@@ -1,12 +1,44 @@
-# Virtual Career Counselor — Same-Day MVP Build Plan
+# Virtual Career Counselor — AI-Assisted (Vibe Coding) Build Plan
 
 **Project:** Virtual Career Counselor  
 **Version:** v3.0 (February 2026)  
 **Live URL:** [https://virtual-career-counselor.onrender.com](https://virtual-career-counselor.onrender.com)  
-**Tech Stack:** Flask 3.1 + Groq API (Llama 3.3 70B) + AWS (DynamoDB, SNS, IAM) + Render.com (PaaS Hosting) + Bootstrap 5.3 + Chart.js 4.4 + Flask-WTF (CSRF) + Flask-Limiter (Rate Limiting) + pytest (62 tests) + GitHub Actions CI  
-**Target:** Fully deployed, feature-rich MVP by end of today  
+**Tech Stack:** Flask 3.1.3 + Groq API 1.0 (Llama 3.3 70B) + Adzuna API (real job data) + Tavily AI 0.7 (web search) + AWS (DynamoDB, SNS, IAM) + Render.com (PaaS Hosting) + Bootstrap 5.3 + Chart.js 4.4 + Flask-WTF 1.2 (CSRF) + Flask-Limiter 4.1 (Rate Limiting) + pytest 9.0 (62 tests) + GitHub Actions CI  
+**Built With:** Vibe Coding — AI-assisted rapid development using GitHub Copilot (Claude) for architecture, code generation, debugging, and iterative refinement  
+**Target:** Fully deployed, feature-rich MVP built via AI-human collaboration  
 **New in v2.0:** 8 killer AI-powered features — Resume Analysis, Learning Path, Salary Negotiation Simulator, Interview Prep, Career Pivot Analyzer, Market Trends Dashboard, Peer Comparison, Gamification (Badges & Leaderboard)  
 **New in v3.0:** 16 advanced features — AI Chatbot (Tavily-enhanced), Cover Letter Generator, GitHub Profile Analyzer, Skill Gap Heatmap, Query History & PDF Export, Dark Mode, Bookmarks, Voice Input, Mock Group Discussion, AI Mentor Chat, Smart Career Search, Weekly Digest, Team/Classroom Mode, Multi-language support
+
+---
+
+## Development Methodology: Vibe Coding
+
+This project was built using **Vibe Coding** — an AI-assisted development approach where the developer collaborates with an AI coding agent (GitHub Copilot powered by Claude) in an iterative, conversational workflow.
+
+### What is Vibe Coding?
+
+Vibe Coding is a modern software development practice where a developer describes what they want in natural language, and an AI agent generates the architecture, code, tests, and documentation. The developer provides direction, reviews output, and steers iterations — while the AI handles the heavy lifting of implementation.
+
+### How This Project Was Built
+
+| Phase | Human Role | AI Role |
+|---|---|---|
+| **Architecture** | Described 24-feature vision, chose tech stack | Designed module structure, DB schema, routing |
+| **Implementation** | Reviewed code, tested flows, caught edge cases | Generated all Python/HTML/JS code across 50+ files |
+| **Integration** | Provided API keys, tested real services | Wired Groq + Tavily + Adzuna + AWS DynamoDB + SNS |
+| **Security** | Requested CSRF + rate limiting | Implemented Flask-WTF, Flask-Limiter, bcrypt hashing |
+| **Testing** | Validated test coverage and results | Generated 62 pytest tests across 7 modules |
+| **DevOps** | Configured Render.com deployment | Set up CI/CD with GitHub Actions, Gunicorn config |
+| **Refinement** | Iterated on evaluation feedback (7.2 → 8.4+) | Deepened features, added Adzuna real data, enhanced prompts |
+
+### Why Vibe Coding?
+
+- **Speed:** A project of this scope (24 features, 55 routes, 10 DynamoDB tables) was built in a fraction of the time traditional development would take
+- **Quality:** AI-generated code follows consistent patterns, includes type hints (0 Pyright errors), and comes with tests
+- **Iteration:** Rapid feedback loops — describe a problem, get a fix in seconds
+- **Learning:** The developer learns architecture patterns, best practices, and new libraries through the process
+
+> **Note:** While AI accelerated development significantly, every design decision, API integration, and deployment configuration was reviewed and directed by the developer. Vibe coding is a collaboration, not automation.
 
 ## IMPORTANT — Use Context7 for Latest Tech
 
@@ -22,40 +54,48 @@ This is mandatory for this project to avoid outdated code patterns and to ensure
 
 ---
 
-## 1) Build Day Strategy (Finish Today)
+## 1) Build Strategy (AI-Assisted Rapid Development)
 
-### Recommended Timebox (16 Hours)
-- **Phase 0 (30 min):** Prerequisites, repo scaffold, secrets management
-- **Phase 1 (90 min):** Authentication + session management + Users table
-- **Phase 2 (90 min):** Career Path AI feature + query persistence
-- **Phase 3 (90 min):** Course Recommendation AI feature + persistence
-- **Phase 4 (75 min):** Job Market Insights AI feature + persistence
-- **Phase 5 (60 min):** SNS notifications (welcome + report emails)
-- **Phase 6 (75 min):** Admin dashboard (users, queries, health)
-- **Phase 7 (45 min):** Resume Analysis + Job Matching (AI)
-- **Phase 8 (45 min):** Personalized Learning Path with Progress Tracking
-- **Phase 9 (60 min):** Salary Negotiation Simulator (multi-turn AI chat)
-- **Phase 10 (60 min):** Interview Prep Simulator (company-specific AI)
-- **Phase 11 (30 min):** Career Pivot Analyzer (AI)
-- **Phase 12 (30 min):** Real-Time Market Trends Dashboard (AI)
-- **Phase 13 (30 min):** Peer Comparison & Benchmarking (AI)
-- **Phase 14 (30 min):** Gamification — Badges & Leaderboard + 3 new DynamoDB tables
-- **Phase 15 (30 min):** AI Chatbot with Tavily web search
-- **Phase 16 (30 min):** Cover Letter Generator (AI)
-- **Phase 17 (30 min):** GitHub Profile Analyzer (GitHub API + AI)
-- **Phase 18 (30 min):** Skill Gap Heatmap (AI + Chart.js)
-- **Phase 19 (30 min):** Query History + PDF Export
-- **Phase 20 (20 min):** Bookmarks (save/remove AI results)
-- **Phase 21 (20 min):** Dark Mode (CSS + JS + localStorage)
-- **Phase 22 (15 min):** Voice Input (Web Speech API)
-- **Phase 23 (45 min):** Mock Group Discussion (multi-round AI-moderated)
-- **Phase 24 (30 min):** AI Mentor Chat (persistent goal-based mentorship)
-- **Phase 25 (30 min):** Smart Career Search (Tavily AI web search)
-- **Phase 26 (30 min):** Weekly Career Digest (15 industries)
-- **Phase 27 (30 min):** Team/Classroom Mode (create/join/share)
-- **Phase 28 (60 min):** Navigation overhaul + Dashboard redesign (22 features)
-- **Phase 29 (90 min):** QA + bug fix pass + hardening
-- **Phase 30 (60 min):** Render.com deployment with Gunicorn + auto-deploy + go-live checks
+### Development Timeline
+
+This project was built iteratively over multiple AI-assisted coding sessions using Vibe Coding methodology. The phases below represent the logical build order — each phase was completed significantly faster than traditional development due to AI code generation.
+
+### Phase Breakdown (Estimated AI-Assisted Time)
+- **Phase 0 (15 min):** Prerequisites, repo scaffold, secrets management
+- **Phase 1 (45 min):** Authentication + session management + Users table
+- **Phase 2 (30 min):** Career Path AI feature + query persistence
+- **Phase 3 (30 min):** Course Recommendation AI feature + persistence
+- **Phase 4 (30 min):** Job Market Insights AI feature + persistence
+- **Phase 5 (20 min):** SNS notifications (welcome + report emails)
+- **Phase 6 (30 min):** Admin dashboard (users, queries, health)
+- **Phase 7 (20 min):** Resume Analysis + Job Matching (AI)
+- **Phase 8 (20 min):** Personalized Learning Path with Progress Tracking
+- **Phase 9 (25 min):** Salary Negotiation Simulator (multi-turn AI chat)
+- **Phase 10 (25 min):** Interview Prep Simulator (company-specific AI)
+- **Phase 11 (15 min):** Career Pivot Analyzer (AI)
+- **Phase 12 (15 min):** Real-Time Market Trends Dashboard (AI)
+- **Phase 13 (15 min):** Peer Comparison & Benchmarking (AI)
+- **Phase 14 (20 min):** Gamification — Badges & Leaderboard + 3 new DynamoDB tables
+- **Phase 15 (15 min):** AI Chatbot with Tavily web search
+- **Phase 16 (15 min):** Cover Letter Generator (AI)
+- **Phase 17 (15 min):** GitHub Profile Analyzer (GitHub API + AI)
+- **Phase 18 (15 min):** Skill Gap Heatmap (AI + Chart.js)
+- **Phase 19 (15 min):** Query History + PDF Export
+- **Phase 20 (10 min):** Bookmarks (save/remove AI results)
+- **Phase 21 (10 min):** Dark Mode (CSS + JS + localStorage)
+- **Phase 22 (10 min):** Voice Input (Web Speech API)
+- **Phase 23 (20 min):** Mock Group Discussion (multi-round AI-moderated)
+- **Phase 24 (15 min):** AI Mentor Chat (persistent goal-based mentorship)
+- **Phase 25 (15 min):** Smart Career Search (Tavily AI web search)
+- **Phase 26 (15 min):** Weekly Career Digest (15 industries)
+- **Phase 27 (15 min):** Team/Classroom Mode (create/join/share)
+- **Phase 28 (30 min):** Navigation overhaul + Dashboard redesign (24 features)
+- **Phase 29 (45 min):** QA + bug fix pass + hardening
+- **Phase 30 (30 min):** Render.com deployment with Gunicorn + auto-deploy
+- **Phase 31 (45 min):** Security hardening (CSRF, rate limiting, bcrypt)
+- **Phase 32 (60 min):** Test suite (62 pytest tests) + GitHub Actions CI
+- **Phase 33 (30 min):** Adzuna API integration (real salary + job data)
+- **Phase 34 (30 min):** Feature deepening + final documentation pass
 
 ### Critical Path
 Environment setup → Auth → Career AI → Course AI → Insights AI → SNS → Admin → Resume → Learning Path → Negotiation → Interview → Pivot → Trends → Peers → Gamification → Chatbot → Cover Letter → GitHub → Skill Gap → History/PDF → Bookmarks → Dark Mode → Voice → GD → Mentor → Smart Career Search → Digest → Classroom → Nav/Dashboard → QA → Deployment.
@@ -246,8 +286,8 @@ virtual-career-counselor/
 - [ ] Register global Jinja2 `md` filter (markdown → HTML with `tables`, `fenced_code`, `nl2br` extensions) so templates can use `{{ content | md | safe }}`.
 - [ ] Add base template with navigation, flash messages, and responsive layout.
 - [ ] Add global error handlers (`404`, `500`) and logging setup.
-- [ ] **Security:** Install `flask-wtf` → enable `CSRFProtect` in app factory; add CSRF meta tag + auto-injection JS to `base.html`.
-- [ ] **Security:** Install `flask-limiter` → configure global default rate limits (`200/hr`, `50/min`) and stricter `10/min` on all AI blueprints.
+- [ ] **Security:** Install `flask-wtf` → enable `CSRFProtect` in app factory; add CSRF meta tag + auto-injection JS to `base.html`. Monkey-patch `fetch()` to auto-attach `X-CSRFToken` header on non-GET requests (covers any future AJAX).
+- [ ] **Security:** Install `flask-limiter` → configure global default rate limits (`200/hr`, `50/min`) and stricter `10/min` on all AI blueprints. Uses in-memory storage (per-worker, resets on deploy — acceptable for portfolio; swap to Redis via `RATELIMIT_STORAGE_URI` for production).
 - [ ] **Testing:** Install `pytest` → create `tests/` suite with `conftest.py` (fixtures for Flask test client, mocked Groq/DynamoDB/Tavily/SNS) + 7 test modules covering all 23 blueprints (62 tests).
 - [ ] **CI/CD:** Create `.github/workflows/ci.yml` — runs `pytest` on every push to `main` and every pull request (Python 3.12, pip cache).
 

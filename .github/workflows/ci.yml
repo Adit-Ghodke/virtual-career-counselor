@@ -13,6 +13,8 @@ jobs:
     env:
       GROQ_API_KEY: fake-key-for-ci
       TAVILY_API_KEY: fake-key-for-ci
+      ADZUNA_APP_ID: fake-id-for-ci
+      ADZUNA_APP_KEY: fake-key-for-ci
       AWS_ACCESS_KEY_ID: fake-key-for-ci
       AWS_SECRET_ACCESS_KEY: fake-key-for-ci
       AWS_REGION: us-east-1

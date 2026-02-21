@@ -2,32 +2,34 @@
 
 > **Live:** [https://virtual-career-counselor.onrender.com](https://virtual-career-counselor.onrender.com)
 
-AI-powered career guidance platform with 27 features, built with Flask, Groq AI (Llama 3.3 70B), and AWS services (DynamoDB, SNS, IAM). Deployed on Render.com with Gunicorn.
+AI-powered career guidance platform with 24 features + real job market data (Adzuna API), built with Flask, Groq AI (Llama 3.3 70B), and AWS services (DynamoDB, SNS, IAM). Deployed on Render.com with Gunicorn.
+
+**Built using Vibe Coding** — AI-assisted rapid development with GitHub Copilot (Claude) for architecture, code generation, testing, and iterative refinement. See the [Build Plan](Virtual_Career_Counselor_MVP_Same_Day_Build_Plan.md) for methodology details.
 
 ---
 
-## Features (27 Total)
+## Features (24 Features + 3 UX Utilities)
 
 ### Core AI Features
 | # | Feature | Description |
 |---|---------|-------------|
-| 1 | **Career Path Explorer** | AI-generated career overviews with skills, certifications, and roadmaps |
-| 2 | **Course Recommendations** | Personalized course suggestions based on interests, skill level, and goals |
-| 3 | **Job Market Insights** | Salary ranges, in-demand skills, demand trends, and hiring hotspots |
-| 4 | **Resume Analyzer** | Upload PDF/DOCX resumes for AI-powered feedback and scoring |
-| 5 | **Learning Path Generator** | Personalized roadmaps with progress tracking |
-| 6 | **Salary Negotiation Simulator** | Multi-turn AI chat to practice salary negotiations |
-| 7 | **Interview Prep Simulator** | Company-specific mock interviews with AI feedback |
-| 8 | **Career Pivot Analyzer** | Evaluate career change feasibility with transition plans |
-| 9 | **Market Trends Dashboard** | Real-time industry trends analysis |
-| 10 | **Peer Comparison** | Benchmark your profile against industry peers |
-| 11 | **AI Chatbot** | General career Q&A with real-time web search enrichment + PDF export |
-| 12 | **Cover Letter Generator** | AI-crafted cover letters tailored to job descriptions |
-| 13 | **GitHub Profile Analyzer** | Analyze GitHub profiles for career insights via GitHub API |
-| 14 | **Skill Gap Heatmap** | Visual skill gap analysis with Chart.js heatmaps |
-| 15 | **Mock Group Discussion** | AI-moderated multi-round group discussions |
-| 16 | **AI Mentor Chat** | Persistent goal-based mentorship conversations |
-| 17 | **Smart Career Search** | Tavily web search + Groq AI for real-time job market intelligence + PDF export |
+| 1 | **Career Path Explorer** | AI career overviews with 10 sections: industry landscape, skills matrix, salary data (Adzuna), career ladder, day-in-the-life, remote potential, project ideas, networking, and 30-day action plan |
+| 2 | **Course Recommendations** | 5-8 ranked courses with ROI scores, free alternatives, budget learning path, and optimal learning order |
+| 3 | **Job Market Insights** | Real salary data (Adzuna API) + 10-section AI analysis: demand trends, geographic hotspots, emerging niches, and 90-day hiring strategies |
+| 4 | **Resume Analyzer** | Upload PDF/DOCX for 100-point scoring rubric (7 categories), ATS compatibility check, auto-rewritten professional summary, and real market matching |
+| 5 | **Learning Path Generator** | 4-phase week-by-week roadmaps with daily schedules, assessments, portfolio projects, community resources, and progress tracker |
+| 6 | **Salary Negotiation Simulator** | Multi-turn AI HR negotiation with tactic identification, power dynamics, scorecard, ideal scripts, and follow-up email templates |
+| 7 | **Interview Prep Simulator** | Company-specific mock interviews with STAR assessment, progressive difficulty, scorecard table, and study guide |
+| 8 | **Career Pivot Analyzer** | 11-section analysis: feasibility score, financial planning, salary comparison (Adzuna), 90-day timeline, portfolio conversion, and networking strategy |
+| 9 | **Market Trends Dashboard** | Real salary + hiring data (Adzuna) with AI & automation impact analysis, 12-month predictions, and actionable next steps |
+| 10 | **Peer Comparison** | Benchmark against real market salaries (Adzuna) with percentile rankings, skill matrix, competitive edge, and 60-day improvement roadmap |
+| 11 | **AI Chatbot** | Career Q&A powered by frameworks (STAR, SMART, Ikigai) with real-time web search + PDF export |
+| 12 | **Cover Letter Generator** | ATS-optimized cover letters with keyword match report, ATS score, tone analysis, and LinkedIn outreach message |
+| 13 | **GitHub Profile Analyzer** | 100-point scoring rubric (6 categories), recruiter first impression, tech stack analysis, and prioritized improvement plan |
+| 14 | **Skill Gap Heatmap** | JSON skill analysis with priority levels, learning resources per skill, milestone timeline, and job market fit estimate |
+| 15 | **Mock Group Discussion** | 3 distinct AI panelists (Analyst, Contrarian, Pragmatist) with live coaching whispers and 6-category scorecard |
+| 16 | **AI Mentor Chat** | Stage-adaptive mentorship (student/mid/senior) with frameworks, action items, and thought-provoking questions |
+| 17 | **Smart Career Search** | Tavily + Adzuna real data + Groq AI for live job market intelligence + PDF export |
 | 18 | **Weekly Career Digest** | Personalized weekly digest across 15 industries |
 
 ### Platform Features
@@ -38,10 +40,14 @@ AI-powered career guidance platform with 27 features, built with Flask, Groq AI 
 | 21 | **Gamification** | Badges and leaderboard for engagement tracking |
 | 22 | **Query History + PDF Export** | Browse past queries and export as styled PDFs |
 | 23 | **Bookmarks** | Save and manage favorite AI results |
-| 24 | **Dark Mode** | Full dark theme via CSS + localStorage |
-| 25 | **Voice Input** | Browser-based speech-to-text via Web Speech API |
-| 26 | **Team/Classroom Mode** | Create and join collaborative career rooms |
-| 27 | **Multi-language Support** | AI responses in user-preferred language |
+| 24 | **Team/Classroom Mode** | Create and join collaborative career rooms |
+
+### UX Utilities
+| Utility | Description |
+|---------|-------------|
+| **Dark Mode** | Full dark theme via CSS + localStorage toggle |
+| **Voice Input** | Browser-based speech-to-text via Web Speech API |
+| **Multi-language Support** | AI responses in user-preferred language (prompt parameter) |
 
 ---
 
@@ -49,20 +55,21 @@ AI-powered career guidance platform with 27 features, built with Flask, Groq AI 
 
 | Layer | Technology |
 |-------|-----------|
-| **Backend** | Python 3.10+ / Flask 3.x |
-| **AI Engine** | Groq API (Llama 3.3 70B Versatile) |
-| **Web Search** | Tavily AI (real-time web context for AI) |
+| **Backend** | Python 3.10+ / Flask 3.1 |
+| **AI Engine** | Groq API (Llama 3.3 70B Versatile) — groq 1.0 |
+| **Web Search** | Tavily AI (real-time web context for AI) — tavily-python 0.7 |
+| **Job Market Data** | Adzuna API (real salaries, live listings, top employers) |
 | **Database** | AWS DynamoDB (10 tables, PAY_PER_REQUEST) |
 | **Notifications** | AWS SNS (email reports) |
-| **Auth** | bcrypt password hashing + Flask-Session |
-| **Security** | Flask-WTF (CSRF) + Flask-Limiter (rate limiting) |
-| **PDF Export** | xhtml2pdf |
+| **Auth** | bcrypt 5.0 password hashing + Flask-Session |
+| **Security** | Flask-WTF 1.2 (CSRF) + Flask-Limiter 4.1 (rate limiting) |
+| **PDF Export** | xhtml2pdf 0.2.17 |
 | **Testing** | pytest (62 tests across 7 test modules) |
 | **CI/CD** | GitHub Actions (lint + test on push/PR) |
-| **Markdown Rendering** | markdown (tables, fenced_code, nl2br) via custom Jinja2 `md` filter |
-| **Resume Parsing** | pypdf (PDF) + python-docx (DOCX) |
+| **Markdown Rendering** | markdown 3.10 (tables, fenced_code, nl2br) via custom Jinja2 `md` filter |
+| **Resume Parsing** | pypdf 6.7 (PDF) + python-docx 1.2 (DOCX) |
 | **Frontend** | Bootstrap 5.3 + Chart.js 4.4 + Jinja2 |
-| **Hosting** | Render.com (PaaS) + Gunicorn |
+| **Hosting** | Render.com (PaaS) + Gunicorn 25.x |
 
 ---
 
@@ -130,12 +137,13 @@ virtual-career-counselor/
 │   ├── digest/                  # Weekly Career Digest
 │   ├── admin/                   # Admin Dashboard
 │   ├── services/
-│   │   ├── groq_service.py      # Groq AI (all 17+ AI functions)
+│   │   ├── groq_service.py      # Groq AI (all 18 AI functions + deep prompts)
 │   │   ├── dynamo_service.py    # DynamoDB CRUD (10 tables)
 │   │   ├── sns_service.py       # AWS SNS email service
 │   │   ├── pdf_service.py       # PDF export (xhtml2pdf)
 │   │   ├── resume_parser.py     # PDF/DOCX text extraction
-│   │   └── web_search_service.py # Tavily AI web search
+│   │   ├── web_search_service.py # Tavily AI web search
+│   │   └── adzuna_service.py    # Adzuna API (real salaries, jobs, companies)
 │   ├── templates/               # 31 Jinja2 HTML templates
 │   └── static/                  # CSS, JS, assets
 ├── scripts/
@@ -179,6 +187,8 @@ Copy `.env.example` to `.env` and fill in your values:
 | `DYNAMODB_DIGEST_TABLE` | No | DigestPreferences table name (default: `DigestPreferences`) |
 | `GITHUB_TOKEN` | No | GitHub personal access token (for GitHub Analyzer) |
 | `TAVILY_API_KEY` | No | Tavily AI API key (enables real-time web search) |
+| `ADZUNA_APP_ID` | No | Adzuna API app ID (enables real salary data & live listings) |
+| `ADZUNA_APP_KEY` | No | Adzuna API app key (free at developer.adzuna.com) |
 | `ADMIN_EMAIL` | No | Admin email for seeding (default: `admin@example.com`) |
 
 ---
@@ -258,8 +268,10 @@ See `Virtual_Career_Counselor_MVP_Same_Day_Build_Plan.md` Section 8 for full dep
 - **App Factory Pattern** — modular Flask app with 23 registered blueprints
 - **Lazy-init AI Clients** — Groq and Tavily clients initialized on first use
 - **Real-time Web Integration via Tavily API** — Every AI feature auto-enriched with live web data; no local vector DB or static knowledge base
-- **Smart Career Search** — Dedicated Tavily → Groq pipeline prioritizing salary data & job links
+- **Real Job Market Data via Adzuna API** — Nine features (Insights, Trends, Peers, Skill Gap, Resume, Smart Search, Career Path, Career Pivot, Weekly Digest) inject real salary figures, live job listings, and top hiring companies into AI prompts so outputs cite actual market evidence
+- **Smart Career Search** — Dedicated Tavily + Adzuna → Groq pipeline prioritizing salary data & job links
 - **Markdown → HTML Rendering** — Global Jinja2 `| md` filter converts AI markdown to styled HTML with table, code, and link support across all 19 templates
+- **Deep AI Prompts** — Every AI feature uses rich, structured system prompts with scoring rubrics, tables, multi-section output formats, and actionable frameworks (STAR, SMART, Ikigai, BATNA)
 - **On-the-fly PDF Export** — Chatbot and Smart Career Search conversations downloadable as styled PDFs via xhtml2pdf (no disk storage)
 - **Resume Parsing via pypdf** — Resumes read one-by-one on upload using `pypdf` (no file storage needed)
 - **Type-Safe Codebase** — Full type hints across all modules (Pyright strict mode: 0 errors)
