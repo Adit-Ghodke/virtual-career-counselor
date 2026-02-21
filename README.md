@@ -55,7 +55,10 @@ AI-powered career guidance platform with 27 features, built with Flask, Groq AI 
 | **Database** | AWS DynamoDB (10 tables, PAY_PER_REQUEST) |
 | **Notifications** | AWS SNS (email reports) |
 | **Auth** | bcrypt password hashing + Flask-Session |
+| **Security** | Flask-WTF (CSRF) + Flask-Limiter (rate limiting) |
 | **PDF Export** | xhtml2pdf |
+| **Testing** | pytest (62 tests across 7 test modules) |
+| **CI/CD** | GitHub Actions (lint + test on push/PR) |
 | **Markdown Rendering** | markdown (tables, fenced_code, nl2br) via custom Jinja2 `md` filter |
 | **Resume Parsing** | pypdf (PDF) + python-docx (DOCX) |
 | **Frontend** | Bootstrap 5.3 + Chart.js 4.4 + Jinja2 |
@@ -140,6 +143,8 @@ virtual-career-counselor/
 │   └── seed_admin.py            # Admin user seeding
 ├── config.py                    # App configuration
 ├── run.py                       # Entry point (gunicorn run:app)
+├── tests/                       # pytest test suite (62 tests)
+├── .github/workflows/ci.yml     # GitHub Actions CI pipeline
 ├── requirements.txt             # Python dependencies
 ├── .env.example                 # Environment variable template
 └── .gitignore
@@ -178,9 +183,65 @@ Copy `.env.example` to `.env` and fill in your values:
 
 ---
 
+## Security
+
+| Feature | Implementation |
+|---------|----------------|
+| **CSRF Protection** | Flask-WTF `CSRFProtect` — hidden token auto-injected into every `POST` form; `fetch()` monkey-patched to add `X-CSRFToken` header on non-GET requests |
+| **Rate Limiting** | Flask-Limiter — global default `200/hr, 50/min`; stricter `10/min` on all 18 AI endpoints. Uses in-memory storage (counters are per-worker and reset on deploy — acceptable for a portfolio-scale project; swap to Redis via `RATELIMIT_STORAGE_URI` for production) |
+| **Password Hashing** | bcrypt (cost factor 12) |
+| **Session Security** | Server-side filesystem sessions via Flask-Session |
+
+---
+
+## Testing
+
+```bash
+# Run the full test suite
+pip install pytest
+python -m pytest tests/ -v --tb=short
+```
+
+62 tests across 7 modules covering all 23 blueprints:
+
+| Module | Coverage |
+|--------|----------|
+| `test_auth.py` | Login, register, logout, session guards |
+| `test_core_features.py` | Career, courses, insights |
+| `test_chat_features.py` | Chatbot, mentor, group discussion |
+| `test_interactive_features.py` | Negotiation, interview, cover letter, resume |
+| `test_analysis_features.py` | Pivot, trends, peers, skill gap, GitHub |
+| `test_platform_features.py` | History, gamification, learning, job match, classroom, digest, admin |
+| `test_security.py` | CSRF enforcement, rate limiter init, input length |
+
+---
+
+## CI/CD (GitHub Actions)
+
+Every push to `main` and every pull request triggers the CI pipeline (`.github/workflows/ci.yml`):
+
+1. Checkout code
+2. Set up Python 3.12 with pip cache
+3. Install dependencies
+4. Run `pytest` (62 tests)
+
+---
+
 ## Deployment (Render.com)
 
-The app is deployed on [Render.com](https://render.com) with GitHub auto-deploy:
+The app is deployed on [Render.com](https://render.com) with GitHub auto-deploy.
+
+### Why Render instead of EC2?
+
+| Concern | Render (chosen) | EC2 |
+|---------|-----------------|-----|
+| **Setup** | Zero-config PaaS — push to `main` and it deploys | Manual AMI, security groups, Nginx, systemd |
+| **HTTPS** | Automatic TLS via Let's Encrypt | Manual Certbot / ACM + ALB |
+| **Scaling** | One-click vertical scaling | Manual ASG / instance resize |
+| **Cost** | Free tier sufficient for portfolio-scale | ~$8+/mo for t3.micro |
+| **Maintenance** | Managed OS/runtime patches | Self-managed patching |
+
+For a portfolio/demo project, Render eliminates ops overhead while keeping the same Flask + Gunicorn + DynamoDB architecture production-ready.
 
 - **Build Command:** `pip install -r requirements.txt`
 - **Start Command:** `gunicorn run:app --bind 0.0.0.0:$PORT`
@@ -202,6 +263,8 @@ See `Virtual_Career_Counselor_MVP_Same_Day_Build_Plan.md` Section 8 for full dep
 - **On-the-fly PDF Export** — Chatbot and Smart Career Search conversations downloadable as styled PDFs via xhtml2pdf (no disk storage)
 - **Resume Parsing via pypdf** — Resumes read one-by-one on upload using `pypdf` (no file storage needed)
 - **Type-Safe Codebase** — Full type hints across all modules (Pyright strict mode: 0 errors)
+- **Security** — CSRF protection (Flask-WTF) + rate limiting (Flask-Limiter, 10 req/min on AI endpoints)
+- **Automated Testing** — 62 pytest tests across all 23 blueprints; GitHub Actions CI on every push
 - **Graceful Degradation** — Optional services (Tavily, GitHub, SNS) fail silently when unconfigured
 
 ---

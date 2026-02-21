@@ -3,7 +3,7 @@
 **Project:** Virtual Career Counselor  
 **Version:** v3.0 (February 2026)  
 **Live URL:** [https://virtual-career-counselor.onrender.com](https://virtual-career-counselor.onrender.com)  
-**Tech Stack:** Flask 3.1 + Groq API (Llama 3.3 70B) + AWS (DynamoDB, SNS, IAM) + Render.com (PaaS Hosting) + Bootstrap 5.3 + Chart.js 4.4  
+**Tech Stack:** Flask 3.1 + Groq API (Llama 3.3 70B) + AWS (DynamoDB, SNS, IAM) + Render.com (PaaS Hosting) + Bootstrap 5.3 + Chart.js 4.4 + Flask-WTF (CSRF) + Flask-Limiter (Rate Limiting) + pytest (62 tests) + GitHub Actions CI  
 **Target:** Fully deployed, feature-rich MVP by end of today  
 **New in v2.0:** 8 killer AI-powered features — Resume Analysis, Learning Path, Salary Negotiation Simulator, Interview Prep, Career Pivot Analyzer, Market Trends Dashboard, Peer Comparison, Gamification (Badges & Leaderboard)  
 **New in v3.0:** 16 advanced features — AI Chatbot (Tavily-enhanced), Cover Letter Generator, GitHub Profile Analyzer, Skill Gap Heatmap, Query History & PDF Export, Dark Mode, Bookmarks, Voice Input, Mock Group Discussion, AI Mentor Chat, Smart Career Search, Weekly Digest, Team/Classroom Mode, Multi-language support
@@ -246,6 +246,10 @@ virtual-career-counselor/
 - [ ] Register global Jinja2 `md` filter (markdown → HTML with `tables`, `fenced_code`, `nl2br` extensions) so templates can use `{{ content | md | safe }}`.
 - [ ] Add base template with navigation, flash messages, and responsive layout.
 - [ ] Add global error handlers (`404`, `500`) and logging setup.
+- [ ] **Security:** Install `flask-wtf` → enable `CSRFProtect` in app factory; add CSRF meta tag + auto-injection JS to `base.html`.
+- [ ] **Security:** Install `flask-limiter` → configure global default rate limits (`200/hr`, `50/min`) and stricter `10/min` on all AI blueprints.
+- [ ] **Testing:** Install `pytest` → create `tests/` suite with `conftest.py` (fixtures for Flask test client, mocked Groq/DynamoDB/Tavily/SNS) + 7 test modules covering all 23 blueprints (62 tests).
+- [ ] **CI/CD:** Create `.github/workflows/ci.yml` — runs `pytest` on every push to `main` and every pull request (Python 3.12, pip cache).
 
 ### Done Criteria
 - App runs locally with `flask run`.

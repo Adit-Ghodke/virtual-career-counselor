@@ -3,9 +3,19 @@ from typing import Any, Tuple, Union
 from flask import Flask
 from werkzeug.wrappers import Response
 from flask_session import Session  # type: ignore[import-untyped]
+from flask_wtf.csrf import CSRFProtect  # type: ignore[import-untyped]
+from flask_limiter import Limiter  # type: ignore[import-untyped]
+from flask_limiter.util import get_remote_address  # type: ignore[import-untyped]
 import markdown as _md  # type: ignore[import-untyped]
 from markupsafe import Markup
 from config import DevelopmentConfig, ProductionConfig
+
+# Module-level limiter so blueprints can import and decorate routes
+limiter: Limiter = Limiter(
+    key_func=get_remote_address,
+    default_limits=["200 per hour", "50 per minute"],
+    storage_uri="memory://",
+)
 
 
 def create_app() -> Flask:
@@ -21,6 +31,12 @@ def create_app() -> Flask:
 
     # Initialize server-side session
     Session(app)
+
+    # ── CSRF Protection ──────────────────────────────────────────
+    CSRFProtect(app)
+
+    # ── Rate Limiting ────────────────────────────────────────────
+    limiter.init_app(app)
 
     # ── Register custom Jinja2 filters ───────────────────────────
     @app.template_filter("md")
@@ -82,6 +98,16 @@ def create_app() -> Flask:
     app.register_blueprint(job_match_bp)
     app.register_blueprint(classroom_bp)
     app.register_blueprint(digest_bp)
+
+    # ── Stricter rate limits on AI-heavy blueprints ──────────────
+    _ai_bps = [
+        career_bp, courses_bp, insights_bp, resume_bp, learning_bp,
+        negotiation_bp, interview_bp, pivot_bp, trends_bp, peers_bp,
+        chatbot_bp, cover_letter_bp, github_bp, skill_gap_bp,
+        mentor_bp, gd_bp, job_match_bp, digest_bp,
+    ]
+    for _bp in _ai_bps:
+        limiter.limit("10 per minute")(_bp)
 
     # ── Dashboard route ──────────────────────────────────────────
     from flask import render_template, session, redirect, url_for
