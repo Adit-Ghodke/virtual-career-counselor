@@ -3,7 +3,7 @@
 **Project:** Virtual Career Counselor  
 **Version:** v3.0 (February 2026)  
 **Live URL:** [https://virtual-career-counselor.onrender.com](https://virtual-career-counselor.onrender.com)  
-**Tech Stack:** Flask 3.1.3 + Groq API 1.0 (Llama 3.3 70B) + Adzuna API (real job data) + Tavily AI 0.7 (web search) + AWS (DynamoDB, SNS, IAM) + Render.com (PaaS Hosting) + Bootstrap 5.3 + Chart.js 4.4 + Flask-WTF 1.2 (CSRF) + Flask-Limiter 4.1 (Rate Limiting) + pytest 9.0 (62 tests) + GitHub Actions CI  
+**Tech Stack:** Python 3.11.x + Flask 3.1.3 + Groq API 1.0 (Llama 3.3 70B) + Adzuna API (real job data) + Tavily AI 0.7 (web search) + AWS (DynamoDB, SNS, IAM) + Render.com (PaaS Hosting) + Bootstrap 5.3 + Chart.js 4.4 + Flask-WTF 1.2 (CSRF) + Flask-Limiter 4.1 (Rate Limiting) + pytest 9.0 (62 tests) + GitHub Actions CI  
 **Built With:** Vibe Coding — AI-assisted rapid development using GitHub Copilot (Claude) for architecture, code generation, debugging, and iterative refinement  
 **Target:** Fully deployed, feature-rich MVP built via AI-human collaboration  
 **New in v2.0:** 8 killer AI-powered features — Resume Analysis, Learning Path, Salary Negotiation Simulator, Interview Prep, Career Pivot Analyzer, Market Trends Dashboard, Peer Comparison, Gamification (Badges & Leaderboard)  
@@ -289,7 +289,7 @@ virtual-career-counselor/
 - [ ] **Security:** Install `flask-wtf` → enable `CSRFProtect` in app factory; add CSRF meta tag + auto-injection JS to `base.html`. Monkey-patch `fetch()` to auto-attach `X-CSRFToken` header on non-GET requests (covers any future AJAX).
 - [ ] **Security:** Install `flask-limiter` → configure global default rate limits (`200/hr`, `50/min`) and stricter `10/min` on all AI blueprints. Uses in-memory storage (per-worker, resets on deploy — acceptable for portfolio; swap to Redis via `RATELIMIT_STORAGE_URI` for production).
 - [ ] **Testing:** Install `pytest` → create `tests/` suite with `conftest.py` (fixtures for Flask test client, mocked Groq/DynamoDB/Tavily/SNS) + 7 test modules covering all 23 blueprints (62 tests).
-- [ ] **CI/CD:** Create `.github/workflows/ci.yml` — runs `pytest` on every push to `main` and every pull request (Python 3.12, pip cache).
+- [ ] **CI/CD:** Create `.github/workflows/ci.yml` — runs `pytest` on every push to `main` and every pull request (Python 3.11, pip cache).
 
 ### Done Criteria
 - App runs locally with `flask run`.
@@ -784,7 +784,7 @@ virtual-career-counselor/
 ---
 
 ## Phase 28 — Navigation Overhaul + Dashboard Redesign (v3.0)
-**Goal:** Update navbar and dashboard to showcase all 27 features.
+**Goal:** Update navbar and dashboard to showcase all 24 features.
 
 ### Tasks
 - [ ] Redesign `base.html` navbar with 2 mega dropdowns:
@@ -814,7 +814,7 @@ virtual-career-counselor/
 
 ### Done Criteria
 - No blocker defects.
-- All 27 features pass basic smoke tests.
+- All 24 features pass basic smoke tests.
 
 ---
 
@@ -1508,49 +1508,50 @@ Render automatically provides:
 
 | # | Feature | Route | Blueprint | Template | AI Function | Version |
 |---|---------|-------|-----------|----------|-------------|---------|
-| 1 | Career Path Explorer | `/career/` | `career_bp` | `career_result.html` | `generate_career_overview()` | v1.0 |
-| 2 | Course Recommendations | `/courses/` | `courses_bp` | `course_result.html` | `generate_course_recommendations()` | v1.0 |
-| 3 | Job Market Insights | `/insights/` | `insights_bp` | `insights_result.html` | `generate_market_insights()` | v1.0 |
-| 4 | Resume Analysis | `/resume/` | `resume_bp` | `upload.html` | `analyze_resume()` | v2.0 |
-| 5 | Learning Path | `/learning/` | `learning_bp` | `roadmap.html` | `generate_learning_path()` | v2.0 |
-| 6 | Salary Negotiation | `/negotiation/` | `negotiation_bp` | `simulator.html` | `negotiation_reply()` | v2.0 |
-| 7 | Interview Prep | `/interview/` | `interview_bp` | `prep.html` | `interview_reply()` | v2.0 |
-| 8 | Career Pivot | `/pivot/` | `pivot_bp` | `analyzer.html` | `analyze_career_pivot()` | v2.0 |
-| 9 | Market Trends | `/trends/` | `trends_bp` | `dashboard.html` | `generate_trends_report()` | v2.0 |
-| 10 | Peer Comparison | `/peers/` | `peers_bp` | `comparison.html` | `generate_peer_comparison()` | v2.0 |
+| 1 | Career Path Explorer (AI) | `/career/` | `career_bp` | `career_result.html` | `generate_career_overview()` | v1.0 |
+| 2 | Course Recommendations (AI) | `/courses/` | `courses_bp` | `course_result.html` | `generate_course_recommendations()` | v1.0 |
+| 3 | Job Market Insights (AI) | `/insights/` | `insights_bp` | `insights_result.html` | `generate_market_insights()` | v1.0 |
+| 4 | Resume Analysis (AI) | `/resume/` | `resume_bp` | `upload.html` | `analyze_resume()` | v2.0 |
+| 5 | Learning Path (AI) | `/learning/` | `learning_bp` | `roadmap.html` | `generate_learning_path()` | v2.0 |
+| 6 | Salary Negotiation (AI) | `/negotiation/` | `negotiation_bp` | `simulator.html` | `negotiation_reply()` | v2.0 |
+| 7 | Interview Prep (AI) | `/interview/` | `interview_bp` | `prep.html` | `interview_reply()` | v2.0 |
+| 8 | Career Pivot (AI) | `/pivot/` | `pivot_bp` | `analyzer.html` | `analyze_career_pivot()` | v2.0 |
+| 9 | Market Trends (AI) | `/trends/` | `trends_bp` | `dashboard.html` | `generate_trends_report()` | v2.0 |
+| 10 | Peer Comparison (AI) | `/peers/` | `peers_bp` | `comparison.html` | `generate_peer_comparison()` | v2.0 |
 | 11 | Badges & Leaderboard | `/gamification/` | `gamification_bp` | `badges.html` | Auto-award rules | v2.0 |
-| 12 | AI Chatbot | `/chatbot/`, `/chatbot/download-pdf` | `chatbot_bp` | `chat.html` | `chatbot_reply()` | v3.0 |
-| 13 | Cover Letter Generator | `/cover-letter/` | `cover_letter_bp` | `generate.html` | `generate_cover_letter()` | v3.0 |
-| 14 | GitHub Analyzer | `/github/` | `github_bp` | `analyze.html` | `analyze_github_profile()` | v3.0 |
-| 15 | Skill Gap Heatmap | `/skill-gap/` | `skill_gap_bp` | `analyze.html` | `analyze_skill_gap()` | v3.0 |
+| 12 | AI Chatbot (AI) | `/chatbot/`, `/chatbot/download-pdf` | `chatbot_bp` | `chat.html` | `chatbot_reply()` | v3.0 |
+| 13 | Cover Letter Generator (AI) | `/cover-letter/` | `cover_letter_bp` | `generate.html` | `generate_cover_letter()` | v3.0 |
+| 14 | GitHub Analyzer (AI) | `/github/` | `github_bp` | `analyze.html` | `analyze_github_profile()` | v3.0 |
+| 15 | Skill Gap Heatmap (AI) | `/skill-gap/` | `skill_gap_bp` | `analyze.html` | `analyze_skill_gap()` | v3.0 |
 | 16 | Query History | `/history/` | `history_bp` | `index.html`, `detail.html` | — | v3.0 |
 | 17 | PDF Export | `/history/export/<id>` | `history_bp` | — | `pdf_service.generate_pdf()` | v3.0 |
 | 18 | Bookmarks | `/history/bookmarks` | `history_bp` | `bookmarks.html` | — | v3.0 |
-| 19 | Mock Group Discussion | `/gd/` | `gd_bp` | `start.html`, `discuss.html` | `group_discussion_reply()` | v3.0 |
-| 20 | AI Mentor Chat | `/mentor/` | `mentor_bp` | `chat.html` | `mentor_reply()` | v3.0 |
-| 21 | Smart Career Search | `/job-match/`, `/job-match/download-pdf` | `job_match_bp` | `match.html` | `smart_career_search()` | v3.0 |
-| 22 | Weekly Digest | `/digest/` | `digest_bp` | `preferences.html`, `result.html` | `generate_weekly_digest()` | v3.0 |
+| 19 | Mock Group Discussion (AI) | `/gd/` | `gd_bp` | `start.html`, `discuss.html` | `group_discussion_reply()` | v3.0 |
+| 20 | AI Mentor Chat (AI) | `/mentor/` | `mentor_bp` | `chat.html` | `mentor_reply()` | v3.0 |
+| 21 | Smart Career Search (AI) | `/job-match/`, `/job-match/download-pdf` | `job_match_bp` | `match.html` | `smart_career_search()` | v3.0 |
+| 22 | Weekly Digest (AI) | `/digest/` | `digest_bp` | `preferences.html`, `result.html` | `generate_weekly_digest()` | v3.0 |
 | 23 | Team/Classroom | `/classroom/` | `classroom_bp` | `index.html`, `view.html` | — | v3.0 |
-| 24 | Dark Mode | — | — | `base.html` + `app.js` | — | v3.0 |
-| 25 | Voice Input | — | — | `app.js` | Web Speech API | v3.0 |
-| 26 | Admin Dashboard | `/admin/` | `admin_bp` | `dashboard.html` | — | v1.0 |
-| 27 | Auth System | `/auth/` | `auth_bp` | `login.html`, `register.html` | — | v1.0 |
+| 24 | Admin Dashboard | `/admin/` | `admin_bp` | `dashboard.html` | — | v1.0 |
 
-**Total: 23 Blueprints | 55 Routes | 10 DynamoDB Tables | 20+ AI-Powered Functions | 27 Features**
+**UX Utilities (not counted as features):** Dark Mode (`base.html` + `app.js`), Voice Input (Web Speech API), Multi-language Support (AI prompt parameter), Auth System (`auth_bp`)
+
+**Total: 23 Blueprints | 55 Routes | 10 DynamoDB Tables | 18 AI-Powered Features + 6 Platform Features = 24 Total + 3 UX Utilities**
 
 ### Technology Stack (v3.0)
 
 | Component | Technology | Version |
 |-----------|-----------|---------|
+| Python | CPython | 3.11.x (pinned via `.python-version` for Render.com compatibility — python-bidi 0.6.x requires Rust compilation on Python 3.14; pre-built manylinux wheels only available up to 3.13) |
 | Backend Framework | Flask | 3.1.x |
 | AI Model | Groq (Llama 3.3 70B Versatile) | Latest |
 | Database | AWS DynamoDB (On-Demand) | — |
 | Notifications | AWS SNS | — |
-| PDF Generation | xhtml2pdf | 0.2.x |
+| PDF Generation | xhtml2pdf | 0.2.17+ (requires python-bidi ≥ 0.5.0 and pycairo; pycairo needs `libcairo2-dev` on Linux) |
+| BiDi Text Support | python-bidi | 0.6.7+ (Rust-based via maturin/PyO3 — pre-built wheels for Python 3.8–3.13 on manylinux; no manylinux wheel for 3.14 yet) |
 | Web Search | Tavily AI (real-time search) | Latest |
 | Resume Parsing | pypdf + python-docx | — |
 | HTTP Client | requests | 2.32.x |
-| Password Hashing | bcrypt | 4.x |
+| Password Hashing | bcrypt | 5.0.x |
 | Frontend CSS | Bootstrap | 5.3.3 |
 | Frontend Icons | Bootstrap Icons | 1.11.3 |
 | Charts | Chart.js | 4.4.0 |

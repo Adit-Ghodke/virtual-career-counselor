@@ -2,37 +2,37 @@
 
 > **Live:** [https://virtual-career-counselor.onrender.com](https://virtual-career-counselor.onrender.com)
 
-AI-powered career guidance platform with 24 features + real job market data (Adzuna API), built with Flask, Groq AI (Llama 3.3 70B), and AWS services (DynamoDB, SNS, IAM). Deployed on Render.com with Gunicorn.
+AI-powered career guidance platform with 18 AI-powered tools + 6 platform features + 3 UX utilities + real job market data (Adzuna API), built with Flask, Groq AI (Llama 3.3 70B), and AWS services (DynamoDB, SNS, IAM). Deployed on Render.com with Gunicorn.
 
 **Built using Vibe Coding** — AI-assisted rapid development with GitHub Copilot (Claude) for architecture, code generation, testing, and iterative refinement. See the [Build Plan](Virtual_Career_Counselor_MVP_Same_Day_Build_Plan.md) for methodology details.
 
 ---
 
-## Features (24 Features + 3 UX Utilities)
+## Features (18 AI-Powered + 6 Platform = 24 Features + 3 UX Utilities)
 
-### Core AI Features
+### AI-Powered Features (18)
 | # | Feature | Description |
 |---|---------|-------------|
-| 1 | **Career Path Explorer** | AI career overviews with 10 sections: industry landscape, skills matrix, salary data (Adzuna), career ladder, day-in-the-life, remote potential, project ideas, networking, and 30-day action plan |
-| 2 | **Course Recommendations** | 5-8 ranked courses with ROI scores, free alternatives, budget learning path, and optimal learning order |
-| 3 | **Job Market Insights** | Real salary data (Adzuna API) + 10-section AI analysis: demand trends, geographic hotspots, emerging niches, and 90-day hiring strategies |
-| 4 | **Resume Analyzer** | Upload PDF/DOCX for 100-point scoring rubric (7 categories), ATS compatibility check, auto-rewritten professional summary, and real market matching |
-| 5 | **Learning Path Generator** | 4-phase week-by-week roadmaps with daily schedules, assessments, portfolio projects, community resources, and progress tracker |
-| 6 | **Salary Negotiation Simulator** | Multi-turn AI HR negotiation with tactic identification, power dynamics, scorecard, ideal scripts, and follow-up email templates |
-| 7 | **Interview Prep Simulator** | Company-specific mock interviews with STAR assessment, progressive difficulty, scorecard table, and study guide |
-| 8 | **Career Pivot Analyzer** | 11-section analysis: feasibility score, financial planning, salary comparison (Adzuna), 90-day timeline, portfolio conversion, and networking strategy |
-| 9 | **Market Trends Dashboard** | Real salary + hiring data (Adzuna) with AI & automation impact analysis, 12-month predictions, and actionable next steps |
-| 10 | **Peer Comparison** | Benchmark against real market salaries (Adzuna) with percentile rankings, skill matrix, competitive edge, and 60-day improvement roadmap |
-| 11 | **AI Chatbot** | Career Q&A powered by frameworks (STAR, SMART, Ikigai) with real-time web search + PDF export |
-| 12 | **Cover Letter Generator** | ATS-optimized cover letters with keyword match report, ATS score, tone analysis, and LinkedIn outreach message |
-| 13 | **GitHub Profile Analyzer** | 100-point scoring rubric (6 categories), recruiter first impression, tech stack analysis, and prioritized improvement plan |
-| 14 | **Skill Gap Heatmap** | JSON skill analysis with priority levels, learning resources per skill, milestone timeline, and job market fit estimate |
-| 15 | **Mock Group Discussion** | 3 distinct AI panelists (Analyst, Contrarian, Pragmatist) with live coaching whispers and 6-category scorecard |
-| 16 | **AI Mentor Chat** | Stage-adaptive mentorship (student/mid/senior) with frameworks, action items, and thought-provoking questions |
-| 17 | **Smart Career Search** | Tavily + Adzuna real data + Groq AI for live job market intelligence + PDF export |
-| 18 | **Weekly Career Digest** | Personalized weekly digest across 15 industries |
+| 1 | **Career Path Explorer** (AI) | AI career overviews with 10 sections: industry landscape, skills matrix, salary data (Adzuna), career ladder, day-in-the-life, remote potential, project ideas, networking, and 30-day action plan |
+| 2 | **Course Recommendations** (AI) | 5-8 ranked courses with ROI scores, free alternatives, budget learning path, and optimal learning order |
+| 3 | **Job Market Insights** (AI) | Real salary data (Adzuna API) + 10-section AI analysis: demand trends, geographic hotspots, emerging niches, and 90-day hiring strategies |
+| 4 | **Resume Analyzer** (AI) | Upload PDF/DOCX for 100-point scoring rubric (7 categories), ATS compatibility check, auto-rewritten professional summary, and real market matching |
+| 5 | **Learning Path Generator** (AI) | 4-phase week-by-week roadmaps with daily schedules, assessments, portfolio projects, community resources, and progress tracker |
+| 6 | **Salary Negotiation Simulator** (AI) | Multi-turn AI HR negotiation with tactic identification, power dynamics, scorecard, ideal scripts, and follow-up email templates |
+| 7 | **Interview Prep Simulator** (AI) | Company-specific mock interviews with STAR assessment, progressive difficulty, scorecard table, and study guide |
+| 8 | **Career Pivot Analyzer** (AI) | 11-section analysis: feasibility score, financial planning, salary comparison (Adzuna), 90-day timeline, portfolio conversion, and networking strategy |
+| 9 | **Market Trends Dashboard** (AI) | Real salary + hiring data (Adzuna) with AI & automation impact analysis, 12-month predictions, and actionable next steps |
+| 10 | **Peer Comparison** (AI) | Benchmark against real market salaries (Adzuna) with percentile rankings, skill matrix, competitive edge, and 60-day improvement roadmap |
+| 11 | **AI Chatbot** (AI) | Career Q&A powered by frameworks (STAR, SMART, Ikigai) with real-time web search + PDF export |
+| 12 | **Cover Letter Generator** (AI) | ATS-optimized cover letters with keyword match report, ATS score, tone analysis, and LinkedIn outreach message |
+| 13 | **GitHub Profile Analyzer** (AI) | 100-point scoring rubric (6 categories), recruiter first impression, tech stack analysis, and prioritized improvement plan |
+| 14 | **Skill Gap Heatmap** (AI) | JSON skill analysis with priority levels, learning resources per skill, milestone timeline, and job market fit estimate |
+| 15 | **Mock Group Discussion** (AI) | 3 distinct AI panelists (Analyst, Contrarian, Pragmatist) with live coaching whispers and 6-category scorecard |
+| 16 | **AI Mentor Chat** (AI) | Stage-adaptive mentorship (student/mid/senior) with frameworks, action items, and thought-provoking questions |
+| 17 | **Smart Career Search** (AI) | Tavily + Adzuna real data + Groq AI for live job market intelligence + PDF export |
+| 18 | **Weekly Career Digest** (AI) | Personalized weekly digest across 15 industries |
 
-### Platform Features
+### Platform Features (6)
 | # | Feature | Description |
 |---|---------|-------------|
 | 19 | **Email Reports (SNS)** | Send any AI report to your email via AWS SNS |
@@ -55,7 +55,7 @@ AI-powered career guidance platform with 24 features + real job market data (Adz
 
 | Layer | Technology |
 |-------|-----------|
-| **Backend** | Python 3.10+ / Flask 3.1 |
+| **Backend** | Python 3.11.x / Flask 3.1 (Python 3.11 pinned for Render.com — python-bidi 0.6.x has no manylinux wheel for 3.14) |
 | **AI Engine** | Groq API (Llama 3.3 70B Versatile) — groq 1.0 |
 | **Web Search** | Tavily AI (real-time web context for AI) — tavily-python 0.7 |
 | **Job Market Data** | Adzuna API (real salaries, live listings, top employers) |
@@ -63,7 +63,8 @@ AI-powered career guidance platform with 24 features + real job market data (Adz
 | **Notifications** | AWS SNS (email reports) |
 | **Auth** | bcrypt 5.0 password hashing + Flask-Session |
 | **Security** | Flask-WTF 1.2 (CSRF) + Flask-Limiter 4.1 (rate limiting) |
-| **PDF Export** | xhtml2pdf 0.2.17 |
+| **PDF Export** | xhtml2pdf 0.2.17+ (requires python-bidi ≥ 0.5.0; pycairo needs `libcairo2-dev` on Linux) |
+| **BiDi Text** | python-bidi 0.6.7+ (Rust-based — pre-built manylinux wheels for Python 3.8–3.13 only) |
 | **Testing** | pytest (62 tests across 7 test modules) |
 | **CI/CD** | GitHub Actions (lint + test on push/PR) |
 | **Markdown Rendering** | markdown 3.10 (tables, fenced_code, nl2br) via custom Jinja2 `md` filter |
@@ -231,7 +232,7 @@ python -m pytest tests/ -v --tb=short
 Every push to `main` and every pull request triggers the CI pipeline (`.github/workflows/ci.yml`):
 
 1. Checkout code
-2. Set up Python 3.12 with pip cache
+2. Set up Python 3.11 with pip cache
 3. Install dependencies
 4. Run `pytest` (62 tests)
 
@@ -255,9 +256,15 @@ For a portfolio/demo project, Render eliminates ops overhead while keeping the s
 
 - **Build Command:** `pip install -r requirements.txt`
 - **Start Command:** `gunicorn run:app --bind 0.0.0.0:$PORT`
-- **Environment:** Python 3
+- **Python Version:** 3.11.x (pinned via `.python-version` — see *Why Python 3.11?* below)
 - **Branch:** `main` (auto-deploys on push)
 - Manage secrets via Render's **Environment Variables** dashboard
+
+### Why Python 3.11 (not latest)?
+
+`python-bidi ≥ 0.6.0` is a Rust-based package (built with maturin/PyO3). Pre-built `manylinux` wheels exist for **Python 3.8–3.13** but **not for Python 3.14**. Without a pre-built wheel, pip tries to compile from source, which fails on Render because its Cargo registry (`/usr/local/cargo/registry/cache/`) is read-only. Pinning to Python 3.11 ensures the pre-built wheel installs instantly with no Rust toolchain required.
+
+`xhtml2pdf ≥ 0.2.17` requires `python-bidi ≥ 0.5.0`, so downgrading python-bidi to the pure-Python 0.4.2 is not an option (pip dependency conflict).
 
 See `Virtual_Career_Counselor_MVP_Same_Day_Build_Plan.md` Section 8 for full deployment steps.
 
