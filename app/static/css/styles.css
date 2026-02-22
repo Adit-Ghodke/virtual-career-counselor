@@ -225,3 +225,213 @@ footer {
 .dropdown-menu-lg {
     min-width: 280px;
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS — ensures nothing overflows on small screens
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Prevent horizontal scroll globally */
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* All containers must respect viewport */
+.container, .container-fluid, main, .card-body, .ai-response {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* AI tables: scrollable on mobile, not overflow */
+.ai-response table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    white-space: nowrap;
+}
+
+/* Code/pre blocks: scroll horizontally, don't break layout */
+.ai-response pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Long URLs and strings don't overflow */
+.ai-response p, .ai-response li, .ai-response td, .ai-response th {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Images in AI response */
+.ai-response img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ── Small screens (≤576px) ──────────────────────────────────────── */
+@media (max-width: 576px) {
+    /* Tighter container padding */
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    main.container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* Navbar brand: shorter text, smaller font */
+    .navbar-brand {
+        font-size: 0.92rem;
+        max-width: 220px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Cards: full width on mobile */
+    .col-md-3, .col-md-4, .col-md-6, .col-lg-4, .col-lg-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* Smaller card padding */
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-body.p-4 {
+        padding: 1rem !important;
+    }
+
+    /* Display icons smaller on mobile */
+    .display-3 {
+        font-size: 2.2rem;
+    }
+
+    .display-4 {
+        font-size: 1.8rem;
+    }
+
+    /* AI response: tighter typography */
+    .ai-response {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .ai-response h2 {
+        font-size: 1.2rem;
+    }
+
+    .ai-response h3 {
+        font-size: 1.05rem;
+    }
+
+    .ai-response table {
+        font-size: 0.8rem;
+    }
+
+    /* Form controls: full width */
+    .form-control, .form-select, textarea {
+        font-size: 0.95rem;
+    }
+
+    /* Buttons: better mobile tap size */
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-sm {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    /* Footer */
+    footer small {
+        font-size: 0.72rem;
+    }
+
+    /* Modals & alerts */
+    .alert {
+        font-size: 0.88rem;
+        padding: 0.6rem 0.8rem;
+    }
+
+    /* Chat windows: override inline height for mobile */
+    #chatWindow {
+        height: auto !important;
+        max-height: 55vh;
+    }
+
+    /* Chat input: normal size on mobile */
+    .form-control-lg {
+        font-size: 1rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    /* Chat bubbles: wider on mobile */
+    #chatWindow .rounded-3 {
+        max-width: 92% !important;
+    }
+
+    /* History/detail page: prevent card header overflow */
+    .card-header {
+        flex-direction: column !important;
+        gap: 0.5rem;
+    }
+
+    .card-header .btn-sm {
+        font-size: 0.75rem;
+    }
+
+    /* Dashboard section titles */
+    h3, h5 {
+        font-size: 1.1rem;
+    }
+
+    /* Alert flex containers: stack on mobile */
+    .alert.d-flex {
+        flex-direction: column !important;
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    /* Dropdown menus: full width on mobile */
+    .dropdown-menu {
+        width: 100%;
+    }
+}
+
+/* ── Medium screens (577px - 768px) ──────────────────────────────── */
+@media (min-width: 577px) and (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1rem;
+    }
+
+    .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .ai-response {
+        font-size: 0.93rem;
+    }
+
+    .ai-response table {
+        font-size: 0.85rem;
+    }
+}
+
+/* ── Tablet landscape / small laptop (769px - 992px) ─────────────── */
+@media (min-width: 769px) and (max-width: 992px) {
+    .dropdown-menu-lg {
+        min-width: 240px;
+    }
+}
