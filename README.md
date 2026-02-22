@@ -55,7 +55,7 @@ AI-powered career guidance platform with 18 AI-powered tools + 6 platform featur
 
 | Layer | Technology |
 |-------|-----------|
-| **Backend** | Python 3.11.x / Flask 3.1 (Python 3.11 pinned for Render.com — python-bidi 0.6.x has no manylinux wheel for 3.14) |
+| **Backend** | Python 3.13.x / Flask 3.1 (Python 3.13 pinned for Render.com — python-bidi 0.6.x has no manylinux wheel for 3.14) |
 | **AI Engine** | Groq API (Llama 3.3 70B Versatile) — groq 1.0 |
 | **Web Search** | Tavily AI (real-time web context for AI) — tavily-python 0.7 |
 | **Job Market Data** | Adzuna API (real salaries, live listings, top employers) |
@@ -232,7 +232,7 @@ python -m pytest tests/ -v --tb=short
 Every push to `main` and every pull request triggers the CI pipeline (`.github/workflows/ci.yml`):
 
 1. Checkout code
-2. Set up Python 3.11 with pip cache
+2. Set up Python 3.13 with pip cache
 3. Install dependencies
 4. Run `pytest` (62 tests)
 
@@ -256,13 +256,13 @@ For a portfolio/demo project, Render eliminates ops overhead while keeping the s
 
 - **Build Command:** `pip install -r requirements.txt`
 - **Start Command:** `gunicorn run:app --bind 0.0.0.0:$PORT`
-- **Python Version:** 3.11.x (pinned via `.python-version` — see *Why Python 3.11?* below)
+- **Python Version:** 3.13.x (pinned via `.python-version` — see *Why Python 3.13?* below)
 - **Branch:** `main` (auto-deploys on push)
 - Manage secrets via Render's **Environment Variables** dashboard
 
-### Why Python 3.11 (not latest)?
+### Why Python 3.13 (not 3.14)?
 
-`python-bidi ≥ 0.6.0` is a Rust-based package (built with maturin/PyO3). Pre-built `manylinux` wheels exist for **Python 3.8–3.13** but **not for Python 3.14**. Without a pre-built wheel, pip tries to compile from source, which fails on Render because its Cargo registry (`/usr/local/cargo/registry/cache/`) is read-only. Pinning to Python 3.11 ensures the pre-built wheel installs instantly with no Rust toolchain required.
+`python-bidi ≥ 0.6.0` is a Rust-based package (built with maturin/PyO3). Pre-built `manylinux` wheels exist for **Python 3.8–3.13** but **not for Python 3.14**. Without a pre-built wheel, pip tries to compile from source, which fails on Render because its Cargo registry (`/usr/local/cargo/registry/cache/`) is read-only. Pinning to Python 3.13 (latest compatible) ensures the pre-built wheel installs instantly with no Rust toolchain required.
 
 `xhtml2pdf ≥ 0.2.17` requires `python-bidi ≥ 0.5.0`, so downgrading python-bidi to the pure-Python 0.4.2 is not an option (pip dependency conflict).
 

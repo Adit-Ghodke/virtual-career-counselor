@@ -37,7 +37,7 @@ def index() -> Union[str, Response]:
 @login_required
 def detail(query_id: str) -> Union[str, Response]:
     """View full details of a single query."""
-    query: Optional[Dict[str, Any]] = get_query_by_id(query_id)
+    query: Optional[Dict[str, Any]] = get_query_by_id(query_id, session["user_id"])
     if not query or query.get("user_id") != session["user_id"]:
         flash("Query not found.", "warning")
         return redirect(url_for("history.index"))
@@ -48,7 +48,7 @@ def detail(query_id: str) -> Union[str, Response]:
 @login_required
 def export_pdf(query_id: str) -> Union[str, Response]:
     """Export a query result to PDF."""
-    query: Optional[Dict[str, Any]] = get_query_by_id(query_id)
+    query: Optional[Dict[str, Any]] = get_query_by_id(query_id, session["user_id"])
     if not query or query.get("user_id") != session["user_id"]:
         flash("Query not found.", "warning")
         return redirect(url_for("history.index"))

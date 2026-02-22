@@ -3,7 +3,7 @@
 **Project:** Virtual Career Counselor  
 **Version:** v3.0 (February 2026)  
 **Live URL:** [https://virtual-career-counselor.onrender.com](https://virtual-career-counselor.onrender.com)  
-**Tech Stack:** Python 3.11.x + Flask 3.1.3 + Groq API 1.0 (Llama 3.3 70B) + Adzuna API (real job data) + Tavily AI 0.7 (web search) + AWS (DynamoDB, SNS, IAM) + Render.com (PaaS Hosting) + Bootstrap 5.3 + Chart.js 4.4 + Flask-WTF 1.2 (CSRF) + Flask-Limiter 4.1 (Rate Limiting) + pytest 9.0 (62 tests) + GitHub Actions CI  
+**Tech Stack:** Python 3.13.x + Flask 3.1.3 + Groq API 1.0 (Llama 3.3 70B) + Adzuna API (real job data) + Tavily AI 0.7 (web search) + AWS (DynamoDB, SNS, IAM) + Render.com (PaaS Hosting) + Bootstrap 5.3 + Chart.js 4.4 + Flask-WTF 1.2 (CSRF) + Flask-Limiter 4.1 (Rate Limiting) + pytest 9.0 (62 tests) + GitHub Actions CI  
 **Built With:** Vibe Coding — AI-assisted rapid development using GitHub Copilot (Claude) for architecture, code generation, debugging, and iterative refinement  
 **Target:** Fully deployed, feature-rich MVP built via AI-human collaboration  
 **New in v2.0:** 8 killer AI-powered features — Resume Analysis, Learning Path, Salary Negotiation Simulator, Interview Prep, Career Pivot Analyzer, Market Trends Dashboard, Peer Comparison, Gamification (Badges & Leaderboard)  
@@ -289,7 +289,7 @@ virtual-career-counselor/
 - [ ] **Security:** Install `flask-wtf` → enable `CSRFProtect` in app factory; add CSRF meta tag + auto-injection JS to `base.html`. Monkey-patch `fetch()` to auto-attach `X-CSRFToken` header on non-GET requests (covers any future AJAX).
 - [ ] **Security:** Install `flask-limiter` → configure global default rate limits (`200/hr`, `50/min`) and stricter `10/min` on all AI blueprints. Uses in-memory storage (per-worker, resets on deploy — acceptable for portfolio; swap to Redis via `RATELIMIT_STORAGE_URI` for production).
 - [ ] **Testing:** Install `pytest` → create `tests/` suite with `conftest.py` (fixtures for Flask test client, mocked Groq/DynamoDB/Tavily/SNS) + 7 test modules covering all 23 blueprints (62 tests).
-- [ ] **CI/CD:** Create `.github/workflows/ci.yml` — runs `pytest` on every push to `main` and every pull request (Python 3.11, pip cache).
+- [ ] **CI/CD:** Create `.github/workflows/ci.yml` — runs `pytest` on every push to `main` and every pull request (Python 3.13, pip cache).
 
 ### Done Criteria
 - App runs locally with `flask run`.
@@ -1541,7 +1541,7 @@ Render automatically provides:
 
 | Component | Technology | Version |
 |-----------|-----------|---------|
-| Python | CPython | 3.11.x (pinned via `.python-version` for Render.com compatibility — python-bidi 0.6.x requires Rust compilation on Python 3.14; pre-built manylinux wheels only available up to 3.13) |
+| Python | CPython | 3.13.12 (pinned via `.python-version` + `PYTHON_VERSION` env var for Render.com — python-bidi 0.6.x has no manylinux wheel for Python 3.14; 3.13 is the latest with pre-built wheels) |
 | Backend Framework | Flask | 3.1.x |
 | AI Model | Groq (Llama 3.3 70B Versatile) | Latest |
 | Database | AWS DynamoDB (On-Demand) | — |

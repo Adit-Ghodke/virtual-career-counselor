@@ -393,8 +393,20 @@ def get_user_queries(user_id: str, limit: int = 50) -> List[Dict[str, Any]]:  # 
     return items[:limit]
 
 
-def get_query_by_id(query_id: str) -> Optional[Dict[str, Any]]:
-    """Get a single query by ID."""
+def get_query_by_id(query_id: str, user_id: str = "") -> Optional[Dict[str, Any]]:
+    """Get a single query by ID.
+
+    The Queries table uses a composite key (query_id HASH + user_id RANGE).
+    When *user_id* is provided the efficient ``get_item`` call is used.
+    Otherwise we fall back to a scan (slower but still works).
+    """
     table: Any = _get_table("DYNAMODB_QUERIES_TABLE")
-    resp = table.get_item(Key={"query_id": query_id})
-    return resp.get("Item")
+    if user_id:
+        resp = table.get_item(Key={"query_id": query_id, "user_id": user_id})
+        return resp.get("Item")
+    # Fallback: scan for the query_id (covers edge cases)
+    resp = table.scan(
+        FilterExpression=Attr("query_id").eq(query_id),  # type: ignore[no-untyped-call]
+    )
+    items: List[Dict[str, Any]] = resp.get("Items", [])
+    return items[0] if items else None

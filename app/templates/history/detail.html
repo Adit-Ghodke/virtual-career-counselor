@@ -27,7 +27,7 @@
                 </div>
                 <div class="mb-3">
                     <strong>Date:</strong>
-                    <span class="text-muted">{{ query.created_at | default('N/A') }}</span>
+                    <span class="text-muted">{{ query.timestamp | default(query.created_at | default('N/A')) }}</span>
                 </div>
                 <hr>
                 <div class="ai-response">{{ query.ai_response | default('No response') | md | safe }}</div>
