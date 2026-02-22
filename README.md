@@ -24,7 +24,7 @@ AI-powered career guidance platform with 18 AI-powered tools + 6 platform featur
 | 9 | **Market Trends Dashboard** (AI) | Real salary + hiring data (Adzuna) with AI & automation impact analysis, 12-month predictions, and actionable next steps |
 | 10 | **Peer Comparison** (AI) | Benchmark against real market salaries (Adzuna) with percentile rankings, skill matrix, competitive edge, and 60-day improvement roadmap |
 | 11 | **AI Chatbot** (AI) | Career Q&A powered by frameworks (STAR, SMART, Ikigai) with real-time web search + PDF export |
-| 12 | **Cover Letter Generator** (AI) | ATS-optimized cover letters with keyword match report, ATS score, tone analysis, and LinkedIn outreach message |
+| 12 | **Cover Letter Generator** (AI) | ATS-optimized cover letters with 3 advanced rules: **Intelligent Skill Mapping** (bridges missing JD skills from related experience), **Seniority Prioritization** (leads with experience over education), **Self-Correction** (auto-includes specific tool names for 95+ ATS score) + keyword match report, tone analysis, and LinkedIn outreach message |
 | 13 | **GitHub Profile Analyzer** (AI) | 100-point scoring rubric (6 categories), recruiter first impression, tech stack analysis, and prioritized improvement plan |
 | 14 | **Skill Gap Heatmap** (AI) | JSON skill analysis with priority levels, learning resources per skill, milestone timeline, and job market fit estimate |
 | 15 | **Mock Group Discussion** (AI) | 3 distinct AI panelists (Analyst, Contrarian, Pragmatist) with live coaching whispers and 6-category scorecard |
